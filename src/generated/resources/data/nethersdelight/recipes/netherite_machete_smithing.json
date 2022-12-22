@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "nethersdelight:diamond_machete"
+  },
+  "result": {
+    "item": "nethersdelight:netherite_machete"
+  }
+}

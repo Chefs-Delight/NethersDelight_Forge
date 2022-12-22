@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "entries": [
+    "nethersdelight:scavenging_hide_from_hoglin",
+
+    "nethersdelight:chopping_feather",
+    "nethersdelight:chopping_ham_from_hoglin",
+    "nethersdelight:chopping_ham_from_pig",
+    "nethersdelight:chopping_leather",
+    "nethersdelight:chopping_rabbit_hide",
+    "nethersdelight:chopping_shulker_shell",
+    "nethersdelight:chopping_smoked_ham_from_hoglin",
+    "nethersdelight:chopping_smoked_ham_from_pig",
+    "nethersdelight:chopping_string"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "minecraft:blaze_rod"
+    },
+    "p": {
+      "item": "nethersdelight:propelpearl"
+    },
+    "s": {
+      "tag": "nethersdelight:raw_strider"
+    }
+  },
+  "pattern": [
+    "ps",
+    "b "
+  ],
+  "result": {
+    "item": "nethersdelight:nether_skewer"
+  }
+}

@@ -1,0 +1,40 @@
+
+modLoader="javafml"
+loaderVersion="[41,)"
+issueTrackerURL="https://github.com/Umpaz/NethersDelight/issues"
+license="MIT License"
+
+[[mods]]
+modId="nethersdelight"
+version="1.19-3.0"
+displayName="Nether's Delight"
+# updateJSONURL=""
+displayURL="https://github.com/Umpaz/NethersDelight"
+logoFile="logo.png"
+logoBlur=false
+credits="Umpaz, SoyTutta, and Sammy;"
+authors="Umpaz, SoyTutta"
+description="A nether expansion for the Farmer's Delight mod!"
+itemIcon="nethersdelight:blackstone_stove"
+configBackground="minecraft:textures/block/netherrack.png"
+
+[[dependencies.nethersdelight]]
+    modId="forge"
+    mandatory=true
+    versionRange="[41.1.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.nethersdelight]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19,1.20)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.nethersdelight]]
+    modId="farmersdelight"
+    mandatory=true
+    versionRange="[1.1.2,)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "nethersdelight:golden_machete"
+  },
+  "result": "minecraft:gold_nugget"
+}

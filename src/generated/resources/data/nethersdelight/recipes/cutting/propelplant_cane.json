@@ -1,0 +1,16 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "nethersdelight:propelplant_cane"
+    }
+  ],
+  "result": [
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

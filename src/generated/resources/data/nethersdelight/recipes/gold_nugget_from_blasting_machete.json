@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "nethersdelight:golden_machete"
+  },
+  "result": "minecraft:gold_nugget"
+}

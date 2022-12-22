@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "nethersdelight:strider_slice"
+    }
+  ],
+  "result": [
+    {
+      "count": 2,
+      "item": "nethersdelight:ground_strider"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

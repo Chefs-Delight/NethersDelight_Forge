@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_nugget"
+    },
+    "h": {
+      "item": "nethersdelight:hoglin_hide"
+    },
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "w": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "php",
+    "pwp",
+    "ggg"
+  ],
+  "result": {
+    "item": "nethersdelight:hoglin_mount"
+  }
+}
