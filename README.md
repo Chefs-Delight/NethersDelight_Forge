@@ -18,7 +18,5 @@ Using advanced hunting techniques and culinary skills, you can manage to prepare
 
 This Addon Mod for Farmer's Delight focuses on giving more content to the Nether to satisfy our desire to eat the infernal creatures!!!
 
-
-
 🔨 Required Dependencies:
 Farmer's Delight 
