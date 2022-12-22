@@ -49,7 +49,7 @@ body:
       description: |
        Please confirm you're playing on the Forge mod loader.
        For issues regarding the Fabric port, go to: (Insert Fabric Link Here)
-       options:
+      options:
         - label: I am using the Forge version of Nether's Delight
           required: true
   - type: checkboxes
