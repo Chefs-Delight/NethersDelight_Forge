@@ -11,6 +11,13 @@
 
 ### Overview
 
-**Nether's Delight** is an addon mod for Farmer's Delight.
+📖 About:
+**Nether's Delight** is an addon mod for Farmer's Delight based around adding culinary content to the nether!  
 
-Travel to the nether to find fun food and new culinary tools!
+Using advanced hunting techniques and culinary skills, you can manage to prepare a myriad of disgusting meals and moss-covered snacks, and even survive a little longer in the Nether!
+
+This Addon Mod for Farmer's Delight focuses on giving more content to the Nether to satisfy our desire to eat the infernal creatures!!!
+
+
+🔨 Required Dependencies:
+Farmer's Delight 
