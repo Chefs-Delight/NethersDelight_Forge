@@ -3,7 +3,7 @@
 <a href="https://www.curseforge.com/minecraft/mc-mods/nethers-delight">
   <img src="http://cf.way2muchnoise.eu/full_496394_downloads.svg" alt="Curseforge Downloads">
 </a>
-<a href="https://discord.gg/M5AtJGPf">
+<a href="https://discord.gg/Vnw54PjFPJ">
   <img alt="Discord" src="https://img.shields.io/discord/855495317298741248?color=brightgreen&label=Discord">
 </a>
 <br>
