@@ -7,7 +7,7 @@
   <img alt="Discord" src="https://img.shields.io/discord/855495317298741248?color=brightgreen&label=Discord">
 </a>
 <br>
-<img src="https://i.imgur.com/a/CAkRUO7.png" width="50%">
+<img src="https://i.imgur.com/Tn69SDR.png" width="50%">
 
 ### Overview
 
