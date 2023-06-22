@@ -45,4 +45,5 @@
   "nethersdelight.jei.composition.fluid": "Sped up by adjacent lava",
   "nethersdelight.jei.composition.light": "Sped up by adjacent flames (see below)",
   "nethersdelight.jei.composition.nether": "Will only compose in the nether"
+  "nethersdelight.block.feast.use_knife": "You need a Knife to cut this"
 }
