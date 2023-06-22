@@ -52,7 +52,7 @@ public class BlackstoneBlastFurnaceBlock extends AbstractFurnaceBlock {
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (state.getValue(LIT)) {
             double d0 = (double)pos.getX() + 0.5D;
-            double d1 = (double)pos.getY();
+            double d1 = pos.getY();
             double d2 = (double)pos.getZ() + 0.5D;
             if (random.nextDouble() < 0.1D) {
                 level.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
@@ -60,7 +60,6 @@ public class BlackstoneBlastFurnaceBlock extends AbstractFurnaceBlock {
 
             Direction direction = state.getValue(FACING);
             Direction.Axis direction$axis = direction.getAxis();
-            double d3 = 0.52D;
             double d4 = random.nextDouble() * 0.6D - 0.3D;
             double d5 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52D : d4;
             double d6 = random.nextDouble() * 9.0D / 16.0D;

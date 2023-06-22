@@ -19,10 +19,12 @@ public class BlackstoneFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
         super(NDBlockEntityTypes.BLACKSTONE_FURNACE.get(), pos, state, RecipeType.SMELTING);
     }
 
+    @Override
     protected Component getDefaultName() {
         return NDTextUtils.getTranslation("container.blackstone_furnace");
     }
 
+    @Override
     protected AbstractContainerMenu createMenu(int recipeBook, Inventory inventory) {
         return new FurnaceMenu(recipeBook, inventory, this, this.dataAccess);
     }

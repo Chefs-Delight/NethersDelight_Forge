@@ -6,8 +6,6 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import umpaz.nethersdelight.NethersDelight;
-import vectorwing.farmersdelight.FarmersDelight;
-import vectorwing.farmersdelight.data.Recipes;
 
 @Mod.EventBusSubscriber(modid = NethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NDDataGenerators

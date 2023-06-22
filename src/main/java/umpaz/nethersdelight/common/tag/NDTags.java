@@ -23,6 +23,8 @@ public class NDTags {
 
     public static final TagKey<Item> MACHETES = modItemTag("tools/machetes");
 
+    public static final TagKey<Item> HUNTING_TOOLS = modItemTag("tools/hunting_tools");
+
     private static TagKey<Item> modItemTag(String path) {
         return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(NethersDelight.MODID + ":" + path));
     }

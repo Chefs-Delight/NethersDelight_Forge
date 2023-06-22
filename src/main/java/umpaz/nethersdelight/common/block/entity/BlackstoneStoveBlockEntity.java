@@ -78,29 +78,29 @@ public class BlackstoneStoveBlockEntity extends SyncedBlockEntity
         return compound;
     }
 
-    public static void cookingTick(Level level, BlockPos pos, BlockState state, BlackstoneStoveBlockEntity stove) {
-        boolean isStoveLit = state.getValue(BlackstoneStoveBlock.LIT);
+    public static void cookingTick(Level level, BlockPos pos, BlockState state, BlackstoneStoveBlockEntity blackstoneStove) {
+        boolean isBlackstoneStoveLit = state.getValue(BlackstoneStoveBlock.LIT);
 
-        if (stove.isStoveBlockedAbove()) {
-            if (!ItemUtils.isInventoryEmpty(stove.inventory)) {
-                ItemUtils.dropItems(level, pos, stove.inventory);
-                stove.inventoryChanged();
+        if (blackstoneStove.isBlackstoneStoveBlockedAbove()) {
+            if (!ItemUtils.isInventoryEmpty(blackstoneStove.inventory)) {
+                ItemUtils.dropItems(level, pos, blackstoneStove.inventory);
+                blackstoneStove.inventoryChanged();
             }
-        } else if (isStoveLit) {
-            stove.cookAndOutputItems();
+        } else if (isBlackstoneStoveLit) {
+            blackstoneStove.cookAndOutputItems();
         } else {
-            for (int i = 0; i < stove.inventory.getSlots(); ++i) {
-                if (stove.cookingTimes[i] > 0) {
-                    stove.cookingTimes[i] = Mth.clamp(stove.cookingTimes[i] - 2, 0, stove.cookingTimesTotal[i]);
+            for (int i = 0; i < blackstoneStove.inventory.getSlots(); ++i) {
+                if (blackstoneStove.cookingTimes[i] > 0) {
+                    blackstoneStove.cookingTimes[i] = Mth.clamp(blackstoneStove.cookingTimes[i] - 2, 0, blackstoneStove.cookingTimesTotal[i]);
                 }
             }
         }
     }
 
-    public static void animationTick(Level level, BlockPos pos, BlockState state, BlackstoneStoveBlockEntity stove) {
-        for (int i = 0; i < stove.inventory.getSlots(); ++i) {
-            if (!stove.inventory.getStackInSlot(i).isEmpty() && level.random.nextFloat() < 0.2F) {
-                Vec2 stoveItemVector = stove.getStoveItemOffset(i);
+    public static void animationTick(Level level, BlockPos pos, BlockState state, BlackstoneStoveBlockEntity blackstoneStove) {
+        for (int i = 0; i < blackstoneStove.inventory.getSlots(); ++i) {
+            if (!blackstoneStove.inventory.getStackInSlot(i).isEmpty() && level.random.nextFloat() < 0.2F) {
+                Vec2 stoveItemVector = blackstoneStove.getStoveItemOffset(i);
                 Direction direction = state.getValue(BlackstoneStoveBlock.FACING);
                 int directionIndex = direction.get2DDataValue();
                 Vec2 offset = directionIndex % 2 == 0 ? stoveItemVector : new Vec2(stoveItemVector.y, stoveItemVector.x);
@@ -190,7 +190,7 @@ public class BlackstoneStoveBlockEntity extends SyncedBlockEntity
         return this.inventory;
     }
 
-    public boolean isStoveBlockedAbove() {
+    public boolean isBlackstoneStoveBlockedAbove() {
         if (level != null) {
             BlockState above = level.getBlockState(worldPosition.above());
             return Shapes.joinIsNotEmpty(GRILLING_AREA, above.getShape(level, worldPosition.above()), BooleanOp.AND);
@@ -210,27 +210,6 @@ public class BlackstoneStoveBlockEntity extends SyncedBlockEntity
                 new Vec2(-X_OFFSET, -Y_OFFSET),
         };
         return OFFSETS[index];
-    }
-
-    private void addParticles() {
-        if (level == null) return;
-
-        for (int i = 0; i < inventory.getSlots(); ++i) {
-            if (!inventory.getStackInSlot(i).isEmpty() && level.random.nextFloat() < 0.2F) {
-                Vec2 stoveItemVector = getStoveItemOffset(i);
-                Direction direction = getBlockState().getValue(BlackstoneStoveBlock.FACING);
-                int directionIndex = direction.get2DDataValue();
-                Vec2 offset = directionIndex % 2 == 0 ? stoveItemVector : new Vec2(stoveItemVector.y, stoveItemVector.x);
-
-                double x = ((double) worldPosition.getX() + 0.5D) - (direction.getStepX() * offset.x) + (direction.getClockWise().getStepX() * offset.x);
-                double y = (double) worldPosition.getY() + 1.0D;
-                double z = ((double) worldPosition.getZ() + 0.5D) - (direction.getStepZ() * offset.y) + (direction.getClockWise().getStepZ() * offset.y);
-
-                for (int k = 0; k < 3; ++k) {
-                    level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 5.0E-4D, 0.0D);
-                }
-            }
-        }
     }
 
     @Override

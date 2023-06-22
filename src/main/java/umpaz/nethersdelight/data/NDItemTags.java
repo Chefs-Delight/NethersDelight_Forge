@@ -60,6 +60,7 @@ public class NDItemTags extends ItemTagsProvider
                 NDItems.SOUL_COMPOST.get(),
                 NDItems.RICH_SOUL_SOIL.get()
         );
+
         tag(ItemTags.PIGLIN_FOOD).add(
                 NDItems.HOGLIN_LOIN.get(),
                 NDItems.HOGLIN_SIRLOIN.get()

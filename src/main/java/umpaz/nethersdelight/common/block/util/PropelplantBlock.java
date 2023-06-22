@@ -12,10 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -24,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.extensions.IForgeBlock;
+import umpaz.nethersdelight.common.registry.NDItems;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
 import javax.annotation.Nonnull;
@@ -32,15 +29,18 @@ import javax.annotation.Nullable;
 
 public class PropelplantBlock extends BushBlock implements IPlantable, BonemealableBlock {
     private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+    public static final float EXPLOSION_LEVEL = 1.0F;
 
     public PropelplantBlock(Properties properties) {
         super(properties);
     }
 
-    public Block self() {
-        return (Block) this;
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        return new ItemStack(NDItems.PROPELPLANT_CANE.get());
     }
 
+    @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
@@ -55,14 +55,12 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
         return false;
     }
 
-    @Nullable
     @Override
     public BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob)
     {
         return BlockPathTypes.DAMAGE_OTHER;
     }
 
-    @Nullable
     @Override
     public BlockPathTypes getAdjacentBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, BlockPathTypes originalType)
     {
@@ -75,22 +73,22 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
             dropResources(state, level, pos, blockEntity, player, stack);
         }
         else {
-            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
+            level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
         }
     }
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity) {
-            entity.makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
+            entity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
             if (!level.isClientSide && !(entity.isCrouching())) {
-                level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
+                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
                 level.removeBlock(pos, false);
             }
         }
         if (entity instanceof Projectile) {
             if (!level.isClientSide) {
-                level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
+                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
                 level.removeBlock(pos, false);
             }
         }
@@ -99,16 +97,10 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion)
     {
-        level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
-        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-        self().wasExploded(level, pos, explosion);
+        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
+        level.removeBlock(pos, false);
+        this.wasExploded(level, pos, explosion);
     }
-
-    @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
-        return !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, pos, facingPos);
-    }
-
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.below();
@@ -116,17 +108,17 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter p_57260_, BlockPos p_57261_, BlockState state, boolean p_57263_) {
+    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClientSide) {
         return false;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level p_220878_, RandomSource p_220879_, BlockPos p_220880_, BlockState p_220881_) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return false;
     }
 
     @Override
-    public void performBonemeal(ServerLevel p_220874_, RandomSource p_220875_, BlockPos p_220876_, BlockState p_220877_) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 
     }
 

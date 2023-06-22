@@ -16,11 +16,14 @@ import umpaz.nethersdelight.common.registry.NDItems;
 import umpaz.nethersdelight.common.tag.NDTags;
 import umpaz.nethersdelight.data.builder.NDCookingPotRecipeBuilder;
 import umpaz.nethersdelight.data.builder.NDCuttingBoardRecipeBuilder;
+import umpaz.nethersdelight.data.recipe.NDCookedRecipes;
+import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -34,7 +37,7 @@ public class NDRecipes extends RecipeProvider
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 		recipesCrafted(consumer);
 		recipesSmelted(consumer);
-		recipesCooked(consumer);
+		NDCookedRecipes.register(consumer);
 		recipesCut(consumer);
 	}
 
@@ -194,34 +197,6 @@ public class NDRecipes extends RecipeProvider
 						Items.GOLD_NUGGET, 0.1F, 100)
 				.unlockedBy("has_golden_machete", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.GOLDEN_MACHETE.get()))
 				.save(consumer, new ResourceLocation(NethersDelight.MODID, "gold_nugget_from_blasting_machete"));
-	}
-	
-	private void recipesCooked(Consumer<FinishedRecipe> consumer) {
-		NDCookingPotRecipeBuilder.cookingPotRecipe(NDItems.STUFFED_HOGLIN.get(), 1, 200, 0.35F)
-		.addIngredient(ModItems.NETHER_SALAD.get())
-		.addIngredient(NDItems.RAW_STUFFED_HOGLIN.get())
-		.addIngredient(ModItems.NETHER_SALAD.get())
-		.build(consumer);
-		NDCookingPotRecipeBuilder.cookingPotRecipe(NDItems.GRILLED_STRIDER.get(), 1, 200, 0.35F)
-		.addIngredient(NDTags.RAW_STRIDER)
-		.addIngredient(Items.WARPED_FUNGUS)
-		.addIngredient(Items.CRIMSON_FUNGUS)
-		.addIngredient(Items.WARPED_ROOTS)
-		.addIngredient(Items.CRIMSON_ROOTS)
-		.build(consumer);
-		NDCookingPotRecipeBuilder.cookingPotRecipe(NDItems.MAGMA_GELATIN.get(), 1, 200, 0.35F, Items.LAVA_BUCKET)
-		.addIngredient(Items.MAGMA_CREAM)
-		.addIngredient(Items.MAGMA_CREAM)
-		.addIngredient(Items.MAGMA_CREAM)
-		.addIngredient(NDItems.PROPELPEARL.get())
-		.build(consumer);
-		NDCookingPotRecipeBuilder.cookingPotRecipe(NDItems.STRIDER_MOSS_STEW.get(), 1, 200, 0.35F)
-		.addIngredient(Items.WARPED_FUNGUS)
-		.addIngredient(Items.CRIMSON_FUNGUS)
-		.addIngredient(Items.CRIMSON_ROOTS)
-		.addIngredient(Items.WARPED_FUNGUS)
-		.addIngredient(NDTags.RAW_STRIDER)
-		.build(consumer);
 	}
 	
 	public void recipesCut(Consumer<FinishedRecipe> consumer) {

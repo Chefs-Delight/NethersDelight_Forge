@@ -35,16 +35,16 @@ public class PropelplantBerryStemBlock extends PropelplantBlock {
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(PEARL) == false) {
+		if (!state.getValue(PEARL)) {
 			if (random.nextInt(16) == 0) {
 				if (random.nextInt(2) > 0) {
 					if (level.isEmptyBlock(pos.above())) {
-						level.setBlock(pos, ((Block) NDBlocks.PROPELPLANT_STEM.get()).defaultBlockState(), 2);
-						level.setBlock(pos.above(), ((Block) NDBlocks.PROPELPLANT_BERRY_CANE.get()).defaultBlockState(), 2);
+						level.setBlock(pos, NDBlocks.PROPELPLANT_STEM.get().defaultBlockState(), 2);
+						level.setBlock(pos.above(), NDBlocks.PROPELPLANT_BERRY_CANE.get().defaultBlockState(), 2);
 					}
 				}
 				else {
-					level.setBlock(pos, (BlockState) state.setValue(PEARL, true), 2);		    
+					level.setBlock(pos, state.setValue(PEARL, true), 2);
 				}
 			}
 		}
@@ -52,35 +52,15 @@ public class PropelplantBerryStemBlock extends PropelplantBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
-		ItemStack itemstack = player.getItemInHand(hand);
-		Item usedItem = itemstack.getItem(); 
-		if (state.getValue(PEARL) == true) {
+		if (state.getValue(PEARL)) {
 				   int j = 1 + level.random.nextInt(2);
 				   popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
-				   level.playSound((Player)null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+				   level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
 				   level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
 		            return InteractionResult.sidedSuccess(level.isClientSide);
 			   }
 	         return super.use(state, level, pos, player, hand, context);
 	   }
-
-	/*@Override
-	 public void onRemove(BlockState state, Level level, BlockPos pos, BlockState facingState, boolean bool) {
-		if (!level.isClientSide) {
-	   level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
-		}
-	} */
-	
-	/*@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockPos belowPos = pos.below();
-		BlockState belowState = level.getBlockState(belowPos);
-		Block belowBlock = belowState.getBlock();
-		if (!(belowBlock == NDBlocks.RICH_SOUL_SOIL.get() || belowBlock == Blocks.CRIMSON_NYLIUM || belowBlock == Blocks.WARPED_NYLIUM || belowBlock == Blocks.NETHERRACK)) {
-			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
-			level.removeBlock(pos, false);	
-		}
-	}*/
 
 		@Override
 	   	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> state) {
@@ -93,20 +73,12 @@ public class PropelplantBerryStemBlock extends PropelplantBlock {
 	   }
 
 	   @Override
-	   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		   if (!state.canSurvive(level, pos)) {
-			   level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
-			   level.destroyBlock(pos, true);
-		   }
-	   } 
-
-	   @Override
-	   public boolean isValidBonemealTarget(BlockGetter p_57260_, BlockPos p_57261_, BlockState state, boolean p_57263_) {
-	      return state.getValue(PEARL) == false;
+	   public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClientSide) {
+	      return !state.getValue(PEARL);
 	   }
 
 	@Override
-	   public boolean isBonemealSuccess(Level p_57265_, RandomSource p_57266_, BlockPos p_57267_, BlockState p_57268_) {
+	   public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
 	      return true;
 	   }
 

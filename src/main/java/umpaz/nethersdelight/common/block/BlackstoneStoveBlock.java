@@ -105,7 +105,7 @@ public class BlackstoneStoveBlock extends BaseEntityBlock
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof BlackstoneStoveBlockEntity stoveEntity) {
             int stoveSlot = stoveEntity.getNextEmptySlot();
-            if (stoveSlot < 0 || stoveEntity.isStoveBlockedAbove()) {
+            if (stoveSlot < 0 || stoveEntity.isBlackstoneStoveBlockedAbove()) {
                 return InteractionResult.PASS;
             }
             Optional<CampfireCookingRecipe> recipe = stoveEntity.getMatchingRecipe(new SimpleContainer(heldStack), stoveSlot);

@@ -12,9 +12,11 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.tutorial.BundleTutorial;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import umpaz.nethersdelight.NethersDelight;
@@ -58,16 +60,6 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, richSoulSoil);
         slotIcon = helper.createDrawable(backgroundImage, 119, 0, slotSize, slotSize);
     }
-//
-//	@Override
-//	public ResourceLocation getUid() {
-//		return this.getRecipeType().getUid();
-//	}
-//
-//	@Override
-//	public Class<? extends DecompositionDummy> getRecipeClass() {
-//		return this.getRecipeType().getRecipeClass();
-//	}
 
     @Override
     public RecipeType<CompositionDummy> getRecipeType() {

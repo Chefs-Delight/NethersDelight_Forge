@@ -1,4 +1,4 @@
-// 1.19	2022-12-22T09:28:00.7451186	Tags for minecraft:item
+// 1.19	2023-01-28T19:08:16.9043594	Tags for minecraft:item
 c217bb534574833b6b05696836dcda7f03d1f605 data/farmersdelight/tags/items/cabbage_roll_ingredients.json
 bcdd6a7fcb64177b61d2c1a9f4da6611bfaa3bb0 data/minecraft/tags/items/piglin_food.json
 7b4aec07bab885be0341f196e17fc5de17a30e21 data/minecraft/tags/items/piglin_loved.json
@@ -6,5 +6,4 @@ ef748fd6402df83c1cd82ed451fe6dd8dc7c2db7 data/minecraft/tags/items/small_flowers
 77c2e56d16c98651cbd688cf3637a045eada5b01 data/minecraft/tags/items/soul_fire_base_blocks.json
 54f94b09d51b157d0976bffab90c8bbde882d7fc data/nethersdelight/tags/items/meal_item.json
 bd8b91464914eb4563aaeaa94c3ec74b059b4dcc data/nethersdelight/tags/items/raw_strider.json
-458827f6f494c0474bed1cb7530ef79cb7655667 data/nethersdelight/tags/items/tools/hunting_tools.json
 95331f8287ec112515f43592541f46905b4c0783 data/nethersdelight/tags/items/tools/machetes.json

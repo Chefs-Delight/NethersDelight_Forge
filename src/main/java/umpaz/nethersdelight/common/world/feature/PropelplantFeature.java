@@ -33,7 +33,6 @@ public class PropelplantFeature extends Feature<NoneFeatureConfiguration> {
 
 		HashMap<BlockPos, BlockState> blocks = new HashMap<>();
 		int i = 0;
-		if (rand.nextInt(4) > 2) { 
 			for (int x = -3; x <= 3; ++x) {
 				for (int z = -3; z <= 3; ++z) {
 					if (Math.abs(x) < 2 || Math.abs(z) < 2) {
@@ -63,7 +62,6 @@ public class PropelplantFeature extends Feature<NoneFeatureConfiguration> {
 					}
 				}
 			}
-		}
 
 		for (Map.Entry<BlockPos, BlockState> entry : blocks.entrySet()) {
 			BlockPos entryPos = entry.getKey();

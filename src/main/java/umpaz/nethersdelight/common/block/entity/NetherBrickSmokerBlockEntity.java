@@ -18,14 +18,17 @@ public class NetherBrickSmokerBlockEntity extends AbstractFurnaceBlockEntity {
         super(NDBlockEntityTypes.NETHER_BRICK_SMOKER.get(), pos, state, RecipeType.SMOKING);
     }
 
+    @Override
     protected Component getDefaultName() {
         return NDTextUtils.getTranslation("container.nether_brick_smoker");
     }
 
+    @Override
     protected int getBurnDuration(ItemStack itemStack) {
         return super.getBurnDuration(itemStack) / 2;
     }
 
+    @Override
     protected AbstractContainerMenu createMenu(int recipeBook, Inventory inventory) {
         return new SmokerMenu(recipeBook, inventory, this, this.dataAccess);
     }

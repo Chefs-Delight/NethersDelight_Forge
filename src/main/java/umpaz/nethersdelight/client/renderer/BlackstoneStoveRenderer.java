@@ -21,11 +21,11 @@ public class BlackstoneStoveRenderer implements BlockEntityRenderer<BlackstoneSt
     }
 
     @Override
-    public void render(BlackstoneStoveBlockEntity stoveEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-        Direction direction = stoveEntity.getBlockState().getValue(BlackstoneStoveBlock.FACING).getOpposite();
+    public void render(BlackstoneStoveBlockEntity blackstoneStoveEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+        Direction direction = blackstoneStoveEntity.getBlockState().getValue(BlackstoneStoveBlock.FACING).getOpposite();
 
-        ItemStackHandler inventory = stoveEntity.getInventory();
-        int posLong = (int) stoveEntity.getBlockPos().asLong();
+        ItemStackHandler inventory = blackstoneStoveEntity.getInventory();
+        int posLong = (int) blackstoneStoveEntity.getBlockPos().asLong();
 
         for (int i = 0; i < inventory.getSlots(); ++i) {
             ItemStack stoveStack = inventory.getStackInSlot(i);
@@ -43,14 +43,14 @@ public class BlackstoneStoveRenderer implements BlockEntityRenderer<BlackstoneSt
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 
                 // Neatly align items according to their index
-                Vec2 itemOffset = stoveEntity.getStoveItemOffset(i);
+                Vec2 itemOffset = blackstoneStoveEntity.getStoveItemOffset(i);
                 poseStack.translate(itemOffset.x, itemOffset.y, 0.0D);
 
                 // Resize the items
                 poseStack.scale(0.375F, 0.375F, 0.375F);
 
-                if (stoveEntity.getLevel() != null)
-                    Minecraft.getInstance().getItemRenderer().renderStatic(stoveStack, ItemTransforms.TransformType.FIXED, LevelRenderer.getLightColor(stoveEntity.getLevel(), stoveEntity.getBlockPos().above()), combinedOverlayIn, poseStack, buffer, posLong + i);
+                if (blackstoneStoveEntity.getLevel() != null)
+                    Minecraft.getInstance().getItemRenderer().renderStatic(stoveStack, ItemTransforms.TransformType.FIXED, LevelRenderer.getLightColor(blackstoneStoveEntity.getLevel(), blackstoneStoveEntity.getBlockPos().above()), combinedOverlayIn, poseStack, buffer, posLong + i);
                 poseStack.popPose();
             }
         }

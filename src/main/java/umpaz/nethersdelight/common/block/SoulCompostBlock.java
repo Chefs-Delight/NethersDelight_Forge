@@ -87,7 +87,7 @@ public class SoulCompostBlock extends Block
     @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
-        if (random.nextInt(10) == 0) {
+        if (random.nextInt(10) == 0 && level.dimensionType().ultraWarm()) {
             level.addParticle(ParticleTypes.SOUL, (double) pos.getX() + (double) random.nextFloat(), (double) pos.getY() + 1.1D, (double) pos.getZ() + (double) random.nextFloat(), 0.0D, 0.0D, 0.0D);
         }
     }
