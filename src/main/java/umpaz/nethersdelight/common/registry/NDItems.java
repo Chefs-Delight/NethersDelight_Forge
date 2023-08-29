@@ -44,8 +44,8 @@ public class NDItems {
     public static final RegistryObject<Item> MIMICARNATION = ITEMS.register("mimicarnation",
             () -> new BlockItem(NDBlocks.MIMICARNATION.get(), new Item.Properties().tab(NethersDelight.CREATIVE_TAB)));
 
-    public static final RegistryObject<Item> HOGLIN_MOUNT = ITEMS.register("hoglin_mount",
-            () -> new BlockItem(NDBlocks.HOGLIN_MOUNT.get(), new Item.Properties().stacksTo(1).tab(NethersDelight.CREATIVE_TAB)));
+    public static final RegistryObject<Item> HOGLIN_TROPHY = ITEMS.register("hoglin_trophy",
+            () -> new BlockItem(NDBlocks.HOGLIN_TROPHY.get(), new Item.Properties().stacksTo(1).tab(NethersDelight.CREATIVE_TAB)));
     public static final RegistryObject<Item> STUFFED_HOGLIN = ITEMS.register("stuffed_hoglin",
             () -> new BlockItem(NDBlocks.STUFFED_HOGLIN.get(), new Item.Properties().stacksTo(1).tab(NethersDelight.CREATIVE_TAB)));
 

@@ -34,7 +34,7 @@ public class NDBlocks {
             BlockBehaviour.Properties.copy(Blocks.POLISHED_BLACKSTONE).requiresCorrectToolForDrops().strength(3.5F).lightLevel(furnaceBlockEmission(13))));
 
     //Decoration
-    public static final RegistryObject<Block> HOGLIN_MOUNT = BLOCKS.register("hoglin_mount",
+    public static final RegistryObject<Block> HOGLIN_TROPHY = BLOCKS.register("hoglin_trophy",
             () -> new HoglinMountBlock(Block.Properties.copy(Blocks.PINK_WOOL)));
     public static final RegistryObject<Block> STUFFED_HOGLIN = BLOCKS.register("stuffed_hoglin",
             () -> new StuffedHoglinBlock(Block.Properties.copy(Blocks.CAKE)));

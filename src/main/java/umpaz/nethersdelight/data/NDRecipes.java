@@ -156,7 +156,7 @@ public class NDRecipes extends RecipeProvider
 			.define('s', ModItems.NETHER_SALAD.get())
 			.unlockedBy("has_hoglin_hide", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.HOGLIN_HIDE.get()))
 			.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, NDItems.HOGLIN_MOUNT.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, NDItems.HOGLIN_TROPHY.get())
 			.pattern("php")
 			.pattern("pwp")
 			.pattern("ggg")
