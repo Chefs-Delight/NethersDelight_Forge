@@ -1,30 +1,41 @@
 package umpaz.nethersdelight.data;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.tag.NDTags;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.concurrent.CompletableFuture;
 
-public class NDBlockTags extends BlockTagsProvider
+public class NDBlockTags extends IntrinsicHolderTagsProvider<Block>
 {
-    public NDBlockTags(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generatorIn, NethersDelight.MODID, existingFileHelper);
+    public NDBlockTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries, @Nullable ExistingFileHelper fileHelper) {
+        super(
+                packOutput,
+                ForgeRegistries.Keys.BLOCKS,
+                registries,
+                (Block attribute) -> ForgeRegistries.BLOCKS.getResourceKey(attribute).get(),
+                NethersDelight.MODID,
+                fileHelper
+        );
     }
 
     //LET REGULAR MUSHROOMS BE PLACED ON RICH SOUL SOIL :)
 
     @Override
-    protected void addTags() {
+    protected void addTags(@Nonnull HolderLookup.Provider registries) {
         this.registerModTags();
         this.registerMinecraftTags();
         this.registerForgeTags();
@@ -59,7 +70,8 @@ public class NDBlockTags extends BlockTagsProvider
     protected void registerMinecraftTags() {
         tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
                 NDBlocks.SOUL_COMPOST.get(),
-                NDBlocks.RICH_SOUL_SOIL.get());
+                NDBlocks.RICH_SOUL_SOIL.get()
+        );
         tag(BlockTags.SMALL_FLOWERS).add(
                 NDBlocks.MIMICARNATION.get()
         );
@@ -70,12 +82,14 @@ public class NDBlockTags extends BlockTagsProvider
 
     protected void registerForgeTags() {
         tag(BlockTags.DIRT).add(
-                NDBlocks.RICH_SOUL_SOIL.get());
+                NDBlocks.RICH_SOUL_SOIL.get()
+        );
     }
 
     protected void registerModTags() {
         tag(NDTags.FUNGUS_COLONY_GROWABLE_ON).add(
-                NDBlocks.RICH_SOUL_SOIL.get());
+                NDBlocks.RICH_SOUL_SOIL.get()
+        );
         tag(NDTags.SOUL_COMPOST_ACTIVATORS).add(
                 Blocks.CRIMSON_FUNGUS,
                 Blocks.WARPED_FUNGUS,
@@ -84,7 +98,8 @@ public class NDBlockTags extends BlockTagsProvider
                 NDBlocks.SOUL_COMPOST.get(),
                 NDBlocks.CRIMSON_FUNGUS_COLONY.get(),
                 NDBlocks.WARPED_FUNGUS_COLONY.get(),
-                NDBlocks.RICH_SOUL_SOIL.get());
+                NDBlocks.RICH_SOUL_SOIL.get()
+        );
         tag(NDTags.SOUL_COMPOST_FLAMES).add(
                 Blocks.LANTERN,
                 Blocks.SOUL_LANTERN,
