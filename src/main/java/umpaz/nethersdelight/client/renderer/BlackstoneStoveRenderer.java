@@ -55,8 +55,21 @@ public class BlackstoneStoveRenderer implements BlockEntityRenderer<BlackstoneSt
                 // Resize the items
                 poseStack.scale(0.375F, 0.375F, 0.375F);
 
-                if (blackstoneStoveEntity.getLevel() != null)
-                    Minecraft.getInstance().getItemRenderer().renderStatic(stoveStack, ItemTransforms.TransformType.FIXED, LevelRenderer.getLightColor(blackstoneStoveEntity.getLevel(), blackstoneStoveEntity.getBlockPos().above()), combinedOverlayIn, poseStack, buffer, posLong + i);
+                if (blackstoneStoveEntity.getLevel() != null) {
+                    Minecraft.getInstance().getItemRenderer().renderStatic(
+                            stoveStack,
+                            ItemDisplayContext.FIXED,
+                            LevelRenderer.getLightColor(
+                                    blackstoneStoveEntity.getLevel(),
+                                    blackstoneStoveEntity.getBlockPos().above()
+                            ),
+                            combinedOverlayIn,
+                            poseStack,
+                            buffer,
+                            blackstoneStoveEntity.getLevel(),
+                            posLong + i
+                    );
+                }
                 poseStack.popPose();
             }
         }
