@@ -1,25 +1,19 @@
 package umpaz.nethersdelight.common.registry;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.block.*;
-import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
-import vectorwing.farmersdelight.common.block.OrganicCompostBlock;
-import vectorwing.farmersdelight.common.block.RichSoilBlock;
 
 import java.util.function.ToIntFunction;
 
@@ -58,25 +52,48 @@ public class NDBlocks {
     public static final RegistryObject<Block> RICH_SOUL_SOIL = BLOCKS.register("rich_soul_soil",
             () -> new RichSoulSoilBlock(Block.Properties.copy(Blocks.SOUL_SOIL).randomTicks()));
 
+    private static final BlockBehaviour.Properties mimicarnationBlockBehaviour = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.PLANT)
+            .pushReaction(PushReaction.DESTROY)
+            .noCollission()
+            .instabreak()
+            .sound(SoundType.GRASS)
+            .lightLevel(state -> 8);
 
     public static final RegistryObject<Block> MIMICARNATION = BLOCKS.register("mimicarnation", () -> new MimicarnationBlock
-            (MobEffects.INVISIBILITY, 8, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).lightLevel((light) -> {
-                return 8;
-            })));
-
+            (MobEffects.INVISIBILITY, 8, mimicarnationBlockBehaviour));
 
     //Propelplant
-    public static final RegistryObject<Block> PROPELPLANT_STEM = BLOCKS.register("propelplant_stem", () -> new PropelplantStemBlock
-            (BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.NETHER).noCollission().sound(SoundType.GRASS).strength(0.1F)));
+    private static final BlockBehaviour.Properties propelplantBlockBehaviour = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.NETHER)
+            .pushReaction(PushReaction.DESTROY)
+            .noCollission()
+            .sound(SoundType.GRASS)
+            .strength(0.1F);
 
-    public static final RegistryObject<Block> PROPELPLANT_BERRY_STEM = BLOCKS.register("propelplant_berry_stem", () -> new PropelplantBerryStemBlock
-            (BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.NETHER).noCollission().sound(SoundType.GRASS).strength(0.1F).lightLevel(propelplantBlockEmission(9))));
+    private static final BlockBehaviour.Properties propelplantBerryBlockBehaviour = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.NETHER)
+            .pushReaction(PushReaction.DESTROY)
+            .noCollission()
+            .sound(SoundType.GRASS)
+            .strength(0.1F)
+            .lightLevel(propelplantBlockEmission(9));
 
-    public static final RegistryObject<Block> PROPELPLANT_CANE = BLOCKS.register("propelplant_cane", () -> new PropelplantCaneBlock
-            (BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.NETHER).noCollission().sound(SoundType.GRASS).strength(0.1F)));
+    public static final RegistryObject<Block> PROPELPLANT_STEM = BLOCKS.register("propelplant_stem", () ->
+            new PropelplantStemBlock(propelplantBlockBehaviour)
+    );
 
-    public static final RegistryObject<Block> PROPELPLANT_BERRY_CANE = BLOCKS.register("propelplant_berry_cane", () -> new PropelplantBerryCaneBlock
-            (BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.NETHER).noCollission().sound(SoundType.GRASS).strength(0.1F).lightLevel(propelplantBlockEmission(9))));
+    public static final RegistryObject<Block> PROPELPLANT_BERRY_STEM = BLOCKS.register("propelplant_berry_stem", () ->
+            new PropelplantBerryStemBlock(propelplantBerryBlockBehaviour)
+    );
+
+    public static final RegistryObject<Block> PROPELPLANT_CANE = BLOCKS.register("propelplant_cane", () ->
+            new PropelplantCaneBlock(propelplantBlockBehaviour)
+    );
+
+    public static final RegistryObject<Block> PROPELPLANT_BERRY_CANE = BLOCKS.register("propelplant_berry_cane", () ->
+            new PropelplantBerryCaneBlock(propelplantBerryBlockBehaviour)
+    );
 
     public static final RegistryObject<Block> PROPELPLANT_TORCH = BLOCKS.register("propelplant_torch", () -> new TorchBlock
             (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_STEM.get()).lightLevel((light) -> {
@@ -84,7 +101,7 @@ public class NDBlocks {
             }), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> PROPELPLANT_WALL_TORCH = BLOCKS.register("propelplant_wall_torch", () -> new WallTorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_STEM.get()).dropsLike(PROPELPLANT_TORCH.get()).lightLevel((light) -> {
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_STEM.get()).lootFrom( PROPELPLANT_TORCH ).lightLevel((light) -> {
                 return 12;
             }), ParticleTypes.FLAME));
 
