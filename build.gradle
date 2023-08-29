@@ -83,7 +83,7 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'nethersdelight', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             environment 'target', 'fmluserdevdata'
 
@@ -106,7 +106,8 @@ repositories {
         name = "BlameJared"
         url = "https://maven.blamejared.com/"
         content {
-            includeGroup "com.blamejared"
+            includeGroup "com.blamejared.crafttweaker"
+            includeGroup "org.openzen.zencode"
             includeGroup "mezz.jei"
         }
     }
@@ -128,7 +129,9 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    def minecraftVersion = "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft minecraftVersion
+
     implementation fg.deobf("curse.maven:farmers-delight-398521:${farmersdelight_version}")
 
     // compile against the JEI API but do not include it at runtime
@@ -137,15 +140,14 @@ dependencies {
     // at runtime, use the full JEI jar for Forge
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
 
-    // implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-${mc_version}:${crafttweaker_version}")
+    def craftTweakerDependency = "com.blamejared.crafttweaker:CraftTweaker-forge-${mc_version}:${crafttweaker_version}"
+    compileOnly craftTweakerDependency
+    runtimeOnly fg.deobf(craftTweakerDependency)
 
-    /* CT documentation
-    annotationProcessor "com.blamejared.crafttweaker:CraftTweaker-${mc_version}:${crafttweaker_version}"
-    annotationProcessor "com.blamejared.crafttweaker:Crafttweaker_Annotation_Processors-${mc_version}:${crafttweaker_annotations_version}"
-    annotationProcessor "org.reflections:reflections:0.9.10" // CT dep
-    annotationProcessor "com.google.code.gson:gson:2.8.7" // CT dep
-     */
-
+    // Generating Docs
+    annotationProcessor minecraftVersion
+    annotationProcessor craftTweakerDependency
+    annotationProcessor "com.blamejared.crafttweaker:Crafttweaker_Annotation_Processors:${crafttweaker_annotations_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Real examples
