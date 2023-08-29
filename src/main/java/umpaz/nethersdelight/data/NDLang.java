@@ -1,6 +1,7 @@
 package umpaz.nethersdelight.data;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -8,7 +9,6 @@ import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDBlocks;
-import umpaz.nethersdelight.common.registry.NDItems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +18,8 @@ import static umpaz.nethersdelight.common.registry.NDItems.ITEMS;
 
 public class NDLang extends LanguageProvider {
 
-    public NDLang(DataGenerator generatorIn) {
-        super(generatorIn, NethersDelight.MODID, "en_us");
+    public NDLang(PackOutput output) {
+        super(output, NethersDelight.MODID, "en_us");
     }
 
     @Override

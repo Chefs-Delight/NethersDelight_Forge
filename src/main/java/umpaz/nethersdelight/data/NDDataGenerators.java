@@ -24,17 +24,17 @@ public class NDDataGenerators
         DataProvider.Factory<NDBlockTags> blockTagsFactory = (PackOutput output) -> {
             return new NDBlockTags(output, registries, fileHelper);
         };
-
         NDBlockTags blockTagsProvider = generator.addProvider(event.includeServer(), blockTagsFactory);
 
         DataProvider.Factory<NDItemTags> itemTagsFactory = (PackOutput output) -> {
             return new NDItemTags(output, registries, blockTagsProvider.contentsGetter(), fileHelper);
         };
+        NDItemTags itemTagsProvider = generator.addProvider(event.includeServer(), itemTagsFactory);
 
-        generator.addProvider(event.includeServer(), itemTagsFactory);
-        generator.addProvider(event.includeServer(), new NDRecipes(generator));
+        DataProvider.Factory<NDRecipes> recipesFactory = NDRecipes::new;
+        generator.addProvider(event.includeServer(), recipesFactory);
+        DataProvider.Factory<NDLang> langFactory = NDLang::new;
+        generator.addProvider(event.includeServer(), langFactory);
         //generator.addProvider(event.includeServer(), new Advancements(generator));
-
-        generator.addProvider(event.includeClient(), new NDLang(generator));
     }
 }
