@@ -26,8 +26,8 @@ mixin {
 }
 
 version = "${mc_version}-${mod_version}"
-group = 'umpaz.nethersdelight' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'NethersDelight'
+group = mod_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_id
 
 //sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -51,7 +51,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -68,7 +68,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -88,12 +88,16 @@ minecraft {
             environment 'target', 'fmluserdevdata'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
         }
     }
+}
+
+sourceSets.main.resources {
+    srcDirs += 'src/generated/resources'
 }
 
 repositories {
@@ -121,10 +125,6 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-}
-
-sourceSets.main.resources {
-    srcDirs += 'src/generated/resources'
 }
 
 dependencies {
