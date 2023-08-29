@@ -19,15 +19,6 @@ public class NethersDelight
 {
 	public static final String MODID = "nethersdelight";
 
-	public static final CreativeModeTab CREATIVE_TAB = new CreativeModeTab(NethersDelight.MODID)
-	{
-		@Nonnull
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(NDBlocks.BLACKSTONE_STOVE.get());
-		}
-	};
-
 	public NethersDelight() {
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
