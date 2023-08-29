@@ -9,6 +9,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import umpaz.nethersdelight.NethersDelight;
+import umpaz.nethersdelight.data.recipe.*;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,10 +32,13 @@ public class NDDataGenerators
         };
         NDItemTags itemTagsProvider = generator.addProvider(event.includeServer(), itemTagsFactory);
 
-        DataProvider.Factory<NDRecipes> recipesFactory = NDRecipes::new;
-        generator.addProvider(event.includeServer(), recipesFactory);
-        DataProvider.Factory<NDLang> langFactory = NDLang::new;
-        generator.addProvider(event.includeServer(), langFactory);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDLang>)NDLang::new);
+
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDCookingPotRecipes>)NDCookingPotRecipes::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDCraftingRecipes>)NDCraftingRecipes::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDCuttingBoardRecipes>)NDCuttingBoardRecipes::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDSmeltingRecipes>)NDSmeltingRecipes::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<NDSmithingRecipes>)NDSmithingRecipes::new);
         //generator.addProvider(event.includeServer(), new Advancements(generator));
     }
 }

@@ -1,23 +1,20 @@
 package umpaz.nethersdelight.data.recipe;
 
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 import umpaz.nethersdelight.common.registry.NDItems;
 import umpaz.nethersdelight.common.tag.NDTags;
 import umpaz.nethersdelight.data.builder.NDCookingPotRecipeBuilder;
 import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
 import vectorwing.farmersdelight.common.registry.ModItems;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
 import vectorwing.farmersdelight.data.builder.CookingPotRecipeBuilder;
-import vectorwing.farmersdelight.data.recipe.CookingRecipes;
 
+import javax.annotation.Nonnull;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
-public class NDCookedRecipes {
+public class NDCookingPotRecipes extends RecipeProvider {
 
     public static final int FAST_COOKING = 100;      // 5 seconds
     public static final int NORMAL_COOKING = 200;    // 10 seconds
@@ -27,8 +24,13 @@ public class NDCookedRecipes {
     public static final float MEDIUM_EXP = 1.0F;
     public static final float LARGE_EXP = 2.0F;
 
-    public static void register(Consumer<FinishedRecipe> consumer) {
-        NDCookingPotRecipeBuilder.cookingPotRecipe(NDItems.STUFFED_HOGLIN.get(), 1, SLOW_COOKING, LARGE_EXP)
+    public NDCookingPotRecipes(PackOutput output) {
+        super(output);
+    }
+
+    @Override
+    protected void buildRecipes(@Nonnull Consumer<FinishedRecipe> consumer) {
+        CookingPotRecipeBuilder.cookingPotRecipe(NDItems.STUFFED_HOGLIN.get(), 1, SLOW_COOKING, LARGE_EXP)
                 .addIngredient(ModItems.NETHER_SALAD.get())
                 .addIngredient(NDItems.RAW_STUFFED_HOGLIN.get())
                 .addIngredient(ModItems.NETHER_SALAD.get())

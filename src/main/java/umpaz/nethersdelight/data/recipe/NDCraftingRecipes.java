@@ -1,43 +1,28 @@
-package umpaz.nethersdelight.data;
+package umpaz.nethersdelight.data.recipe;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDItems;
 import umpaz.nethersdelight.common.tag.NDTags;
-import umpaz.nethersdelight.data.builder.NDCuttingBoardRecipeBuilder;
-import umpaz.nethersdelight.data.recipe.NDCookedRecipes;
 import vectorwing.farmersdelight.common.registry.ModItems;
-import vectorwing.farmersdelight.common.tag.ForgeTags;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class NDRecipes extends RecipeProvider
-{
-	public NDRecipes(PackOutput output) {
+public class NDCraftingRecipes extends RecipeProvider {
+
+	public NDCraftingRecipes(PackOutput output) {
 		super(output);
 	}
 
 	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		recipesCrafted(consumer);
-		recipesSmelted(consumer);
-		NDCookedRecipes.register(consumer);
-		recipesCut(consumer);
-	}
-
-	private void recipesCrafted(Consumer<FinishedRecipe> consumer) {
+	public void buildRecipes(@Nonnull Consumer<FinishedRecipe> consumer) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NDItems.SOUL_COMPOST.get())
 				.requires(Items.SOUL_SOIL)
 				.requires(Items.TWISTING_VINES)
@@ -124,8 +109,6 @@ public class NDRecipes extends RecipeProvider
 				.unlockedBy("has_gold_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(Items.GOLD_INGOT))
 				.save(consumer);
 
-		netheriteSmithing(consumer, NDItems.DIAMOND_MACHETE.get(), RecipeCategory.TOOLS, NDItems.NETHERITE_MACHETE.get());
-
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS,  NDItems.BLACKSTONE_STOVE.get())
 			.pattern("nnn")
 			.pattern("b b")
@@ -173,55 +156,5 @@ public class NDRecipes extends RecipeProvider
 			.define('c', NDItems.PROPELPLANT_CANE.get())
 			.unlockedBy("has_propelplant", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.PROPELPEARL.get()))
 			.save(consumer);
-	}
-	
-	private void recipesSmelted(Consumer<FinishedRecipe> consumer) {
-		foodSmeltingRecipes("hoglin_sirloin", NDItems.HOGLIN_LOIN.get(), NDItems.HOGLIN_SIRLOIN.get(), 0.35F, consumer);
-
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(NDItems.IRON_MACHETE.get()), RecipeCategory.MISC,
-						Items.IRON_NUGGET, 0.1F, 200)
-				.unlockedBy("has_iron_machete", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.IRON_MACHETE.get()))
-				.save(consumer, new ResourceLocation(NethersDelight.MODID, "iron_nugget_from_smelting_machete"));
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(NDItems.GOLDEN_MACHETE.get()), RecipeCategory.MISC,
-						Items.GOLD_NUGGET, 0.1F, 200)
-				.unlockedBy("has_golden_machete", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.GOLDEN_MACHETE.get()))
-				.save(consumer, new ResourceLocation(NethersDelight.MODID, "gold_nugget_from_smelting_machete"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(NDItems.IRON_MACHETE.get()), RecipeCategory.MISC,
-						Items.IRON_NUGGET, 0.1F, 100)
-				.unlockedBy("has_iron_machete", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.IRON_MACHETE.get()))
-				.save(consumer, new ResourceLocation(NethersDelight.MODID, "iron_nugget_from_blasting_machete"));
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(NDItems.GOLDEN_MACHETE.get()), RecipeCategory.MISC,
-						Items.GOLD_NUGGET, 0.1F, 100)
-				.unlockedBy("has_golden_machete", InventoryChangeTrigger.TriggerInstance.hasItems(NDItems.GOLDEN_MACHETE.get()))
-				.save(consumer, new ResourceLocation(NethersDelight.MODID, "gold_nugget_from_blasting_machete"));
-	}
-	
-	public void recipesCut(Consumer<FinishedRecipe> consumer) {
-		NDCuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(NDItems.STRIDER_SLICE.get()), Ingredient.of(ForgeTags.TOOLS_KNIVES), NDItems.GROUND_STRIDER.get(), 2)
-			.build(consumer);
-		NDCuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(NDItems.CRIMSON_FUNGUS_COLONY.get()), Ingredient.of(ForgeTags.TOOLS_KNIVES), Items.CRIMSON_FUNGUS, 5)
-			.build(consumer);
-		NDCuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(NDItems.WARPED_FUNGUS_COLONY.get()), Ingredient.of(ForgeTags.TOOLS_KNIVES), Items.WARPED_FUNGUS, 5)
-			.build(consumer);
-		NDCuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(NDItems.HOGLIN_HIDE.get()), Ingredient.of(ForgeTags.TOOLS_KNIVES), Items.LEATHER, 4)
-			.build(consumer);
-		NDCuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(NDItems.PROPELPLANT_CANE.get()), Ingredient.of(ForgeTags.TOOLS_KNIVES), Items.GUNPOWDER)
-			.build(consumer);
-	}
-	
-	private void foodSmeltingRecipes(String name, ItemLike ingredient, ItemLike result, float experience, Consumer<FinishedRecipe> consumer) {
-		String namePrefix = new ResourceLocation(NethersDelight.MODID, name).toString();
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(ingredient), RecipeCategory.FOOD,
-				result, experience, 200)
-			.unlockedBy(name, InventoryChangeTrigger.TriggerInstance.hasItems(ingredient))
-			.save(consumer);
-		SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(ingredient), RecipeCategory.FOOD,
-				result, experience, 600)
-			.unlockedBy(name, InventoryChangeTrigger.TriggerInstance.hasItems(ingredient))
-			.save(consumer, namePrefix + "_from_campfire_cooking");
-		SimpleCookingRecipeBuilder.smoking(Ingredient.of(ingredient), RecipeCategory.FOOD,
-				result, experience, 100)
-			.unlockedBy(name, InventoryChangeTrigger.TriggerInstance.hasItems(ingredient))
-			.save(consumer, namePrefix + "_from_smoking");
 	}
 }
