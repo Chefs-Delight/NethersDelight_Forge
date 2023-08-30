@@ -105,10 +105,6 @@ public class NDBlocks {
                 return 12;
             }), ParticleTypes.FLAME));
 
-
-
-
-
     public static ToIntFunction<BlockState> stoveBlockEmission(int lightValue, int soulLightValue) {
         return (state) -> {
             if (state.getValue(BlackstoneStoveBlock.SOUL)) {
