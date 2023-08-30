@@ -22,8 +22,6 @@ public class NethersDelight
 	public NethersDelight() {
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		modEventBus.addListener(NDCommonSetup::init);
-
 		NDItems.ITEMS.register(modEventBus);
 		NDBlocks.BLOCKS.register(modEventBus);
 		NDBiomeFeatures.FEATURES.register(modEventBus);
