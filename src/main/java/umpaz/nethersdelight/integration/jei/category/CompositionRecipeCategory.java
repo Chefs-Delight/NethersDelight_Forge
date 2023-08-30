@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.tutorial.BundleTutorial;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -93,9 +94,9 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
     }
 
     @Override
-    public void draw(CompositionDummy recipe, IRecipeSlotsView recipeSlotsView, PoseStack ms, double mouseX, double mouseY) {
-        this.slotIcon.draw(ms, 63, 53);
-        this.slotIcon.draw(ms, 37, 53);
+    public void draw(CompositionDummy recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        this.slotIcon.draw(guiGraphics, 63, 53);
+        this.slotIcon.draw(guiGraphics, 37, 53);
     }
 
     @Override
