@@ -1,20 +1,18 @@
 package umpaz.nethersdelight.common;
 
 import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import umpaz.nethersdelight.common.registry.NDBlocks;
+import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDItems;
-import umpaz.nethersdelight.common.world.NDGeneration;
-import vectorwing.farmersdelight.common.registry.ModItems;
 
+
+@Mod.EventBusSubscriber(modid = NethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NDCommonSetup {
-
+    @SubscribeEvent
     public static void init(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            registerCompostables();
-            NDGeneration.registerNDGeneration();
-        });
+        event.enqueueWork(NDCommonSetup::registerCompostables);
     }
 
     public static void registerCompostables() {
