@@ -1,6 +1,7 @@
 package umpaz.nethersdelight.common.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,24 +17,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.tag.NDTags;
-import vectorwing.farmersdelight.common.utility.MathUtils;
+import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
-public class FungusColonyBlock extends BushBlock implements BonemealableBlock
-{
-    public final Supplier<Item> fungusType;
-
+public class FungusColonyBlock extends MushroomColonyBlock {
+    public static final int PLACING_LIGHT_LEVEL = 13;
     public static final IntegerProperty COLONY_AGE = BlockStateProperties.AGE_3;
     protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D),
@@ -43,23 +40,28 @@ public class FungusColonyBlock extends BushBlock implements BonemealableBlock
     };
 
     public FungusColonyBlock(Properties properties, Supplier<Item> fungusType) {
-        super(properties);
-        this.fungusType = fungusType;
-        this.registerDefaultState(this.stateDefinition.any().setValue(COLONY_AGE, 0));
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return SHAPE_BY_AGE[state.getValue(this.getAgeProperty())];
-    }
-
-    public IntegerProperty getAgeProperty() {
-        return COLONY_AGE;
+        super(properties, fungusType);
     }
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
-        return state.is(BlockTags.NYLIUM) || state.is(Blocks.MYCELIUM) || state.is(Blocks.SOUL_SOIL) || state.is(NDBlocks.RICH_SOUL_SOIL.get()) || super.mayPlaceOn(state, worldIn, pos);
+        return state.is(BlockTags.NYLIUM)
+                || state.is(Blocks.MYCELIUM)
+                || state.is(Blocks.SOUL_SOIL)
+                || state.is(NDBlocks.RICH_SOUL_SOIL.get())
+                || state.is(BlockTags.DIRT)
+                || state.is(Blocks.FARMLAND);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos floorPos = pos.below();
+        BlockState floorState = level.getBlockState(floorPos);
+        if (floorState.is(NDTags.FUNGUS_COLONY_GROWABLE_ON)) {
+            return true;
+        } else {
+            return level.getRawBrightness(pos, 0) < PLACING_LIGHT_LEVEL && floorState.canSustainPlant(level, floorPos, Direction.UP, this);
+        }
     }
 
     @Override
@@ -98,25 +100,9 @@ public class FungusColonyBlock extends BushBlock implements BonemealableBlock
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(COLONY_AGE);
         BlockState groundState = level.getBlockState(pos.below());
-        if (age < this.getMaxAge() && groundState.is(NDTags.FUNGUS_COLONY_GROWABLE_ON) && MathUtils.RAND.nextInt(5) == 0) {
+        if (age < this.getMaxAge() && groundState.is(NDTags.FUNGUS_COLONY_GROWABLE_ON) && ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt(4) == 0)) {
             level.setBlock(pos, state.setValue(COLONY_AGE, age + 1), 2);
-            net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+            ForgeHooks.onCropsGrowPost(level, pos, state);
         }
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(BlockGetter worldIn, BlockPos pos, BlockState state) {
-        return new ItemStack(this.fungusType.get());
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(COLONY_AGE);
-    }
-
-    @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        int age = Math.min(3, state.getValue(COLONY_AGE) + 1);
-        level.setBlock(pos, state.setValue(COLONY_AGE, age), 2);
     }
 }
