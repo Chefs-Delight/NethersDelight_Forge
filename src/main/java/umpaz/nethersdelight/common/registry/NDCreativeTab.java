@@ -32,7 +32,13 @@ public class NDCreativeTab {
     private static void acceptToolsAndUtilitiesContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() != CreativeModeTabs.TOOLS_AND_UTILITIES) return;
 
-        acceptToolItems(event);
+        acceptMacheteItems(event);
+    }
+
+    private static void acceptCombatContents(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() != CreativeModeTabs.COMBAT) return;
+
+        acceptMacheteItems(event);
     }
 
     private static void acceptMainTabContents(BuildCreativeModeTabContentsEvent event) {
@@ -63,7 +69,7 @@ public class NDCreativeTab {
     }
 
     private static void acceptItems(BuildCreativeModeTabContentsEvent event) {
-        acceptToolItems(event);
+        acceptMacheteItems(event);
         acceptFoodItems(event);
 
         event.accept(NDItems.HOGLIN_HIDE.get());
@@ -74,7 +80,7 @@ public class NDCreativeTab {
         );
     }
 
-    private static void acceptToolItems(BuildCreativeModeTabContentsEvent event) {
+    private static void acceptMacheteItems(BuildCreativeModeTabContentsEvent event) {
         event.accept(NDItems.IRON_MACHETE.get());
         event.accept(NDItems.GOLDEN_MACHETE.get());
         event.accept(NDItems.DIAMOND_MACHETE.get());
