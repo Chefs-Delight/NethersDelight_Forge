@@ -7,10 +7,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import umpaz.nethersdelight.common.NDCommonSetup;
-import umpaz.nethersdelight.common.registry.NDBiomeFeatures;
-import umpaz.nethersdelight.common.registry.NDBlockEntityTypes;
-import umpaz.nethersdelight.common.registry.NDBlocks;
-import umpaz.nethersdelight.common.registry.NDItems;
+import umpaz.nethersdelight.common.registry.*;
 
 import javax.annotation.Nonnull;
 
@@ -26,6 +23,7 @@ public class NethersDelight
 		NDBlocks.BLOCKS.register(modEventBus);
 		NDBiomeFeatures.FEATURES.register(modEventBus);
 		NDBlockEntityTypes.TILES.register(modEventBus);
+		NDCreativeTab.TABS.register(modEventBus);
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
