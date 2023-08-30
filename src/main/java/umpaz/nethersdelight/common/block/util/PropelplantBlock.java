@@ -2,9 +2,12 @@ package umpaz.nethersdelight.common.block.util;
 
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -15,8 +18,10 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,6 +33,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PropelplantBlock extends BushBlock implements IPlantable, BonemealableBlock {
+    public static final BooleanProperty PEARL = BooleanProperty.create("pearl");
     private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
     public static final float EXPLOSION_LEVEL = 1.0F;
 
@@ -73,7 +79,7 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
             dropResources(state, level, pos, blockEntity, player, stack);
         }
         else {
-            level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
+            level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
         }
     }
 
@@ -82,13 +88,13 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
         if (entity instanceof LivingEntity) {
             entity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
             if (!level.isClientSide && !(entity.isCrouching())) {
-                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
+                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
                 level.removeBlock(pos, false);
             }
         }
         if (entity instanceof Projectile) {
             if (!level.isClientSide) {
-                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
+                level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
                 level.removeBlock(pos, false);
             }
         }
@@ -97,7 +103,7 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion)
     {
-        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Explosion.BlockInteraction.NONE);
+        level.explode((Entity)null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
         level.removeBlock(pos, false);
         this.wasExploded(level, pos, explosion);
     }
@@ -108,7 +114,7 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClientSide) {
+    public boolean isValidBonemealTarget(LevelReader p_256559_, BlockPos p_50898_, BlockState p_50899_, boolean p_50900_) {
         return false;
     }
 
@@ -122,4 +128,11 @@ public class PropelplantBlock extends BushBlock implements IPlantable, Bonemeala
 
     }
 
+    protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
+        int j = 1 + level.random.nextInt(2);
+        popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
 }

@@ -2,28 +2,22 @@ package umpaz.nethersdelight.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import umpaz.nethersdelight.common.block.util.PropelplantBlock;
 import umpaz.nethersdelight.common.registry.NDBlocks;
-import umpaz.nethersdelight.common.registry.NDItems;
 
 public class PropelplantBerryCaneBlock extends PropelplantBlock {
-	public static final BooleanProperty PEARL = BooleanProperty.create("pearl");
-
 	public PropelplantBerryCaneBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(PEARL, false));
@@ -57,12 +51,8 @@ public class PropelplantBerryCaneBlock extends PropelplantBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
 		if (state.getValue(PEARL)) {
-				   int j = 1 + level.random.nextInt(2);
-				   popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
-				   level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-				   level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
-		            return InteractionResult.sidedSuccess(level.isClientSide);
-			   }
+			return harvestPearls(state, level, pos, player, hand, context);
+		}
 		return super.use(state, level, pos, player, hand, context);
 	}
 
@@ -77,7 +67,7 @@ public class PropelplantBerryCaneBlock extends PropelplantBlock {
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClientSide) {
+	public boolean isValidBonemealTarget(LevelReader p_256559_, BlockPos pos, BlockState state, boolean isClientSide) {
 	      return !state.getValue(PEARL);
 	   }
 
