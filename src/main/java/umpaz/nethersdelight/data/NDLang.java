@@ -42,7 +42,7 @@ public class NDLang extends LanguageProvider {
             add(i.get().getDescriptionId(), name);
         });
 
-        add("itemGroup.main", "Nether's Delight");
+        add("nethersdelight.itemGroup.main", "Nether's Delight");
         add("nethersdelight.container.blackstone_furnace", "Blackstone Furnace");
         add("nethersdelight.container.nether_brick_smoker", "Nether Brick Smoker");
         add("nethersdelight.container.blackstone_blast_furnace", "Blackstone Blast Furnace");
