@@ -1,0 +1,25 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'NeoForged'
+            url = 'https://maven.neoforged.net/releases'
+            content {
+                includeGroupAndSubgroups "net.neoforged"
+                includeGroupAndSubgroups "org.spongepowered"
+                includeGroupAndSubgroups "net.minecraftforge"
+            }
+        }
+        maven {
+            name = "ParchmentMC"
+            url = 'https://maven.parchmentmc.org'
+            content {
+                includeGroupAndSubgroups "org.parchmentmc"
+            }
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
