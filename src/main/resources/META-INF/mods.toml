@@ -6,7 +6,7 @@ license="MIT License"
 
 [[mods]]
 modId="nethersdelight"
-version="1.19-3.0"
+version="1.19-3.1"
 displayName="Nether's Delight"
 # updateJSONURL=""
 displayURL="https://github.com/Umpaz/NethersDelight"
