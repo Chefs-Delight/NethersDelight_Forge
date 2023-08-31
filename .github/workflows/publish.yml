@@ -24,6 +24,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: generate resources
         run: ./gradlew runData
+        continue-on-error: true
       - name: build
         run: ./gradlew build
       - name: Publish Minecraft Mods Forge
