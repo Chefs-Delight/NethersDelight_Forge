@@ -17,7 +17,7 @@ public class NethersDelight
 		NDItems.ITEMS.register(modEventBus);
 		NDBlocks.BLOCKS.register(modEventBus);
 		NDFeatures.FEATURES.register(modEventBus);
-		NDBlockEntityTypes.TILES.register(modEventBus);
+		NDBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
 		NDCreativeTab.TABS.register(modEventBus);
 
 		MinecraftForge.EVENT_BUS.register(this);

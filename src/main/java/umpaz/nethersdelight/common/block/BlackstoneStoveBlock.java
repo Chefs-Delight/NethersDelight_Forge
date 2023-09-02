@@ -28,16 +28,14 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import umpaz.nethersdelight.common.block.entity.BlackstoneStoveBlockEntity;
 import umpaz.nethersdelight.common.registry.NDBlockEntityTypes;
-import vectorwing.farmersdelight.common.block.StoveBlock;
 import vectorwing.farmersdelight.common.registry.ModDamageTypes;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 
 import javax.annotation.Nullable;
 
-public class BlackstoneStoveBlock extends StoveBlock {
+public class BlackstoneStoveBlock extends AbstractStoveBlock {
     public static final BooleanProperty SOUL = BooleanProperty.create("soul");;
 
     public BlackstoneStoveBlock(Properties properties) {
@@ -91,9 +89,9 @@ public class BlackstoneStoveBlock extends StoveBlock {
     }
 
     @Override
-    public void extinguish(BlockState state, Level level, BlockPos pos) {
-        super.extinguish(state, level, pos);
-        level.setBlock(pos, level.getBlockState(pos).setValue(SOUL, false), 2);
+    public void extinguish(@Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
+        BlockState updatedState = state.setValue(SOUL, false);
+        super.extinguish(entity, updatedState, level, pos);
     }
 
     @Override
@@ -150,12 +148,6 @@ public class BlackstoneStoveBlock extends StoveBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (state.getValue(LIT)) {
-            return createTickerHelper(blockEntityType, NDBlockEntityTypes.BLACKSTONE_STOVE.get(), level.isClientSide
-                    ? BlackstoneStoveBlockEntity::animationTick
-                    : BlackstoneStoveBlockEntity::cookingTick
-            );
-        }
-        return null;
+        return createStoveTicker(level, state, blockEntityType, NDBlockEntityTypes.BLACKSTONE_STOVE.get());
     }
 }
