@@ -74,6 +74,9 @@ public class NDBlockTags extends IntrinsicHolderTagsProvider<Block>
         tag(BlockTags.SMALL_FLOWERS).add(
                 NDBlocks.MIMICARNATION.get()
         );
+        tag(BlockTags.FLOWER_POTS).add(
+                NDBlocks.POTTED_MIMICARNATION.get()
+        );
         tag(net.minecraft.tags.BlockTags.TALL_FLOWERS).add(
                 ModBlocks.WILD_RICE.get()
         );
