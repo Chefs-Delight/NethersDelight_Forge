@@ -1,7 +1,7 @@
 name: Publish to CurseForge and Modrinth
 
 on:
-  create:
+  push:
     tag:
       - '*'
 
