@@ -20,10 +20,6 @@ import java.util.function.ToIntFunction;
 public class NDBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, NethersDelight.MODID);
 
-    private static FlowerPotBlock vanillaFlowerPot() {
-        return (FlowerPotBlock) net.minecraftforge.registries.ForgeRegistries.BLOCKS.getDelegateOrThrow(Blocks.FLOWER_POT).get();
-    }
-
     // Workstations
     public static final RegistryObject<Block> BLACKSTONE_STOVE = BLOCKS.register("blackstone_stove", () -> new BlackstoneStoveBlock(
             BlockBehaviour.Properties.copy(Blocks.POLISHED_BLACKSTONE_BRICKS).lightLevel(stoveBlockEmission(13, 9))));
@@ -69,7 +65,7 @@ public class NDBlocks {
 
     public static final RegistryObject<Block> POTTED_MIMICARNATION = BLOCKS.register("potted_mimicarnation",
             () -> new FlowerPotBlock(
-                    NDBlocks::vanillaFlowerPot,
+                    null,
                     NDBlocks.MIMICARNATION,
                     BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)
                             .mapColor(MapColor.PLANT)

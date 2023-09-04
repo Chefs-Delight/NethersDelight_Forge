@@ -1,6 +1,7 @@
 {
-    "parent": "block/flower_pot_cross",
-    "textures": {
-        "plant": "nethersdelight:block/mimicarnation"
-    }
+  "parent": "minecraft:block/flower_pot_cross",
+  "render_type": "minecraft:cutout",
+  "textures": {
+      "plant": "nethersdelight:block/mimicarnation"
+  }
 }
