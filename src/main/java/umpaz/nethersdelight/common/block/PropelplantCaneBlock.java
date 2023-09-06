@@ -1,49 +1,287 @@
 package umpaz.nethersdelight.common.block;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import umpaz.nethersdelight.common.block.util.PropelplantBlock;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
+import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.common.registry.NDBlocks;
+import umpaz.nethersdelight.common.registry.NDItems;
+import vectorwing.farmersdelight.common.tag.ModTags;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-public class PropelplantCaneBlock extends PropelplantBlock {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class PropelplantCaneBlock extends Block implements IPlantable, BonemealableBlock {
+    public static final BooleanProperty PEARL = BooleanProperty.create("pearl");
+    public static final BooleanProperty STEM = BooleanProperty.create("stem");
+    public static final BooleanProperty BUD = BooleanProperty.create("bud");
+    public static final float EXPLOSION_LEVEL = 1.0F;
+    private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-	public PropelplantCaneBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-	}
+    public PropelplantCaneBlock(Properties properties) {
 
-	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (level.isEmptyBlock(pos.above()) && random.nextInt(16) == 0) {
-			level.setBlock(pos.above(), NDBlocks.PROPELPLANT_BERRY_CANE.get().defaultBlockState(), 2);
-		}
-	}
+        super(properties);
+        registerDefaultState(
+                defaultBlockState()
+                        .setValue(PEARL, false)
+                        .setValue(STEM, false)
+                        .setValue(BUD, false)
+        );
+    }
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().below());
-		if (blockState == NDBlocks.PROPELPLANT_STEM.get().defaultBlockState() || blockState == NDBlocks.PROPELPLANT_CANE.get().defaultBlockState()) {
-			return NDBlocks.PROPELPLANT_CANE.get().defaultBlockState();
-		}
-		else {
-			return NDBlocks.PROPELPLANT_BERRY_STEM.get().defaultBlockState();
-		}
-	}
-	
-	@Override
-	 protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-		   return state.is(NDBlocks.PROPELPLANT_CANE.get()) || state.is(NDBlocks.PROPELPLANT_STEM.get());
-	   }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(PEARL, STEM, BUD);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState belowState = context.getLevel().getBlockState(context.getClickedPos().below());
+        BlockState aboveState = context.getLevel().getBlockState(context.getClickedPos().above());
+
+        return defaultBlockState()
+                .setValue(STEM, !belowState.is(this))
+                .setValue(BUD, !aboveState.is(this));
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
+        if (state.getValue(PEARL)) return harvestPearls(state, level, pos, player, hand, context);
+        return super.use(state, level, pos, player, hand, context);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        return new ItemStack(NDItems.PROPELPLANT_CANE.get());
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+        return BlockPathTypes.DAMAGE_OTHER;
+    }
+
+    @Override
+    public @Nullable BlockPathTypes getAdjacentBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, BlockPathTypes originalType) {
+        return BlockPathTypes.DAMAGE_OTHER;
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!state.getValue(BUD)) return;
+        if (state.getValue(PEARL)) return;
+
+        // if the below block is a cane, 1 in 8 chance of growing a pearl
+        BlockState belowState = level.getBlockState(pos.below());
+        if (belowState.is(this) && !belowState.getValue(STEM)) {
+            if (random.nextInt(8) > 0) return;
+            level.setBlock(pos, state.setValue(PEARL, true), 2);
+            return;
+        }
+
+        // at this point, either this block is a stem or the below block is a stem
+        // 1 in 16 chance of doing anything at all
+        if (random.nextInt(16) > 0) return;
+
+        // 1 in 3 chance of trying to grow a cane
+        if (random.nextInt(2) > 0) {
+            if (!level.isEmptyBlock(pos.above())) return;
+
+            level.setBlock(
+                    pos,
+                    state.setValue(BUD, false),
+                    2
+            );
+            level.setBlock(
+                    pos.above(),
+                    defaultBlockState()
+                            .setValue(BUD, true)
+                            .setValue(STEM, false),
+                    2
+            );
+            return;
+        }
+
+        level.setBlock(
+                pos,
+                state.setValue(PEARL, true),
+                2
+        );
+    }
+
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {
+        if (state.canSurvive(level, pos)) return;
+        explode(state, level, pos);
+    }
+
+    public BlockState updateShape(BlockState state, Direction neighborDirection, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (neighborDirection == Direction.DOWN) {
+            if (!state.canSurvive(level, pos)) {
+                level.scheduleTick(pos, this, 1);
+                return state;
+            }
+
+            return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos)
+                    .setValue(STEM, !neighborState.is(this));
+        }
+
+        if (neighborDirection == Direction.UP) {
+            return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos)
+                    .setValue(BUD, !neighborState.is(this));
+        }
+
+        return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos);
+    }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @javax.annotation.Nullable BlockEntity blockEntity, ItemStack stack) {
+        if (stack.is(ModTags.KNIVES)) {
+            dropResources(state, level, pos, blockEntity, player, stack);
+            return;
+        }
+        explode(level, pos, player);
+    }
+
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            entity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
+            if (!entity.isCrouching()) explode(level, pos, livingEntity);
+            return;
+        }
+        if (entity instanceof Projectile) {
+            explode(level, pos);
+            return;
+        }
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return true;
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion)
+    {
+        explode(state, level, pos);
+    }
+
+    @Override
+    public void onCaughtFire(BlockState state, Level world, BlockPos pos, @Nullable net.minecraft.core.Direction face, @javax.annotation.Nullable LivingEntity igniter) {
+        explode(world, pos, igniter);
+    }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction)
+    {
+        if (state.getValue(PEARL)) return 100;
+        return 60;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction)
+    {
+        return 100;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos belowPos = pos.below();
+        BlockState belowState = level.getBlockState(belowPos);
+
+        if (belowState.is(this)) return true;
+        return this.mayPlaceOn(belowState, level, belowPos);
+    }
+
+    protected boolean mayPlaceOn(BlockState state, LevelReader level, BlockPos pos) {
+        return state.is(BlockTags.NYLIUM) || state.is(Tags.Blocks.NETHERRACK) || state.is(NDBlocks.RICH_SOUL_SOIL.get());
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide) {
+        return state.getValue(BUD) && !state.getValue(PEARL);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        level.setBlock(pos, state.setValue(PEARL, true), 2);
+    }
+
+    protected void explode(Level level, BlockPos pos) {
+        explode(level, pos, (LivingEntity)null);
+    }
+
+    protected void explode(Level level, BlockPos pos, @Nullable LivingEntity entity) {
+       explode(level.getBlockState(pos), level, pos, entity);
+    }
+
+    protected void explode(BlockState state, Level level, BlockPos pos) {
+        explode(state, level, pos, (LivingEntity)null);
+    }
+
+    protected void explode(BlockState state, Level level, BlockPos pos, @Nullable LivingEntity entity) {
+        if (level.isClientSide) return;
+
+        Explosion explosion = level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
+        int j = 1 + level.random.nextInt(2);
+        popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public PlantType getPlantType(BlockGetter level, BlockPos pos) {
+        return PlantType.NETHER;
+    }
+
+    @Override
+    public BlockState getPlant(BlockGetter level, BlockPos pos) {
+        return defaultBlockState();
+    }
 }
