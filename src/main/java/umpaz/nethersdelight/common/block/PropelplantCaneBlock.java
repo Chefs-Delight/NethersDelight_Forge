@@ -107,7 +107,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         if (!state.getValue(BUD)) return;
         if (state.getValue(PEARL)) return;
 
-        // if the below block is a cane, 1 in 8 chance of growing a pearl
+        // if the below block is a cane, 1 in 9 chance of growing a pearl
         BlockState belowState = level.getBlockState(pos.below());
         if (belowState.is(this) && !belowState.getValue(STEM)) {
             if (random.nextInt(8) > 0) return;
@@ -116,7 +116,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         }
 
         // at this point, either this block is a stem or the below block is a stem
-        // 1 in 16 chance of doing anything at all
+        // 1 in 17 chance of doing anything at all
         if (random.nextInt(16) > 0) return;
 
         // 2 in 3 chance of trying to grow a cane
