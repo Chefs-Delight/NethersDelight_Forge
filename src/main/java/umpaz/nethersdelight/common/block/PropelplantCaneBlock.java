@@ -119,7 +119,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         // 1 in 16 chance of doing anything at all
         if (random.nextInt(16) > 0) return;
 
-        // 1 in 3 chance of trying to grow a cane
+        // 2 in 3 chance of trying to grow a cane
         if (random.nextInt(2) > 0) {
             if (!level.isEmptyBlock(pos.above())) return;
 
