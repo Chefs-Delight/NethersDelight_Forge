@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cross",
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "nethersdelight:block/propelplant_berry_stem_berry"
+    "cross": "nethersdelight:block/propelplant_stem_bud_pearl"
   }
 }

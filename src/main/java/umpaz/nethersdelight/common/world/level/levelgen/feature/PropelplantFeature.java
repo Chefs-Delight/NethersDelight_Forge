@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import umpaz.nethersdelight.common.block.PropelplantBerryCaneBlock;
+import umpaz.nethersdelight.common.block.PropelplantCaneBlock;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 
 import java.util.HashMap;
@@ -25,10 +25,18 @@ public class PropelplantFeature extends Feature<NoneFeatureConfiguration> {
 		WorldGenLevel level = context.level();
 		BlockPos pos = context.origin();
 		RandomSource rand = level.getRandom();
-		BlockState propelplantBush = NDBlocks.PROPELPLANT_BERRY_STEM.get().defaultBlockState();
-		BlockState propelplantStem = NDBlocks.PROPELPLANT_STEM.get().defaultBlockState();
+
+		BlockState propelplantBush = NDBlocks.PROPELPLANT_CANE.get().defaultBlockState()
+				.setValue(PropelplantCaneBlock.STEM, true)
+				.setValue(PropelplantCaneBlock.BUD, true);
+
+		BlockState propelplantStem = NDBlocks.PROPELPLANT_CANE.get().defaultBlockState()
+				.setValue(PropelplantCaneBlock.STEM, true);
+
 		BlockState propelplantCane = NDBlocks.PROPELPLANT_CANE.get().defaultBlockState();
-		BlockState propelplantBerryCane = NDBlocks.PROPELPLANT_BERRY_CANE.get().defaultBlockState();
+
+		BlockState propelplantBerryCane = NDBlocks.PROPELPLANT_CANE.get().defaultBlockState()
+				.setValue(PropelplantCaneBlock.BUD, true);
 
 		HashMap<BlockPos, BlockState> blocks = new HashMap<>();
 		int i = 0;
@@ -44,15 +52,15 @@ public class PropelplantFeature extends Feature<NoneFeatureConfiguration> {
 								BlockPos evenMoreAbove = blockpos.above(2);
 								if (level.isEmptyBlock(blockpos) && !level.isOutsideBuildHeight(above)) {
 									if (rand.nextBoolean()) {
-										blocks.put(blockpos, propelplantBush.setValue(PropelplantBerryCaneBlock.PEARL, rand.nextBoolean()));
+										blocks.put(blockpos, propelplantBush.setValue(PropelplantCaneBlock.PEARL, rand.nextBoolean()));
 									}
 									else if (rand.nextBoolean() && level.isEmptyBlock(above)) {
 										blocks.put(blockpos, propelplantStem);
-										blocks.put(above, propelplantBerryCane.setValue(PropelplantBerryCaneBlock.PEARL, rand.nextBoolean()));
+										blocks.put(above, propelplantBerryCane.setValue(PropelplantCaneBlock.PEARL, rand.nextBoolean()));
 									} else if (level.isEmptyBlock(above) && level.isEmptyBlock(evenMoreAbove)) {
 										blocks.put(blockpos, propelplantStem);
 										blocks.put(above, propelplantCane);
-										blocks.put(evenMoreAbove, propelplantBerryCane.setValue(PropelplantBerryCaneBlock.PEARL, rand.nextBoolean()));
+										blocks.put(evenMoreAbove, propelplantBerryCane.setValue(PropelplantCaneBlock.PEARL, rand.nextBoolean()));
 									}
 								}
 							}

@@ -59,10 +59,7 @@ public class NDBlockTags extends IntrinsicHolderTagsProvider<Block>
                 NDBlocks.RICH_SOUL_SOIL.get()
         );
         tag(ModTags.MINEABLE_WITH_KNIFE).add(
-                NDBlocks.PROPELPLANT_CANE.get(),
-                NDBlocks.PROPELPLANT_STEM.get(),
-                NDBlocks.PROPELPLANT_BERRY_STEM.get(),
-                NDBlocks.PROPELPLANT_BERRY_CANE.get()
+                NDBlocks.PROPELPLANT_CANE.get()
         );
     }
 
