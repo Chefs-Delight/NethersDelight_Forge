@@ -1,15 +1,10 @@
 package umpaz.nethersdelight;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import umpaz.nethersdelight.common.NDCommonSetup;
 import umpaz.nethersdelight.common.registry.*;
-
-import javax.annotation.Nonnull;
 
 @Mod(NethersDelight.MODID)
 public class NethersDelight
@@ -21,8 +16,8 @@ public class NethersDelight
 
 		NDItems.ITEMS.register(modEventBus);
 		NDBlocks.BLOCKS.register(modEventBus);
-		NDBiomeFeatures.FEATURES.register(modEventBus);
-		NDBlockEntityTypes.TILES.register(modEventBus);
+		NDFeatures.FEATURES.register(modEventBus);
+		NDBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
 		NDCreativeTab.TABS.register(modEventBus);
 
 		MinecraftForge.EVENT_BUS.register(this);

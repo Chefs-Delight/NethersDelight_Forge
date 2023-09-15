@@ -1,7 +1,28 @@
 {
   "variants": {
-    "": {
+    "stem=false,pearl=false,bud=false": {
       "model": "nethersdelight:block/propelplant_cane"
+    },
+    "stem=true,pearl=false,bud=false": {
+      "model": "nethersdelight:block/propelplant_stem"
+    },
+    "stem=false,pearl=true,bud=false": {
+      "model": "nethersdelight:block/propelplant_cane_bud_pearl"
+    },
+    "stem=false,pearl=false,bud=true": {
+      "model": "nethersdelight:block/propelplant_cane_bud"
+    },
+    "stem=true,pearl=true,bud=false": {
+      "model": "nethersdelight:block/propelplant_stem_bud_pearl"
+    },
+    "stem=true,pearl=false,bud=true": {
+      "model": "nethersdelight:block/propelplant_stem_bud"
+    },
+    "stem=false,pearl=true,bud=true": {
+      "model": "nethersdelight:block/propelplant_cane_bud_pearl"
+    },
+    "stem=true,pearl=true,bud=true": {
+      "model": "nethersdelight:block/propelplant_stem_bud_pearl"
     }
   }
 }

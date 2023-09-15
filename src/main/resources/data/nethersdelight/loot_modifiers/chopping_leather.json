@@ -13,7 +13,7 @@
       }
     },
     {
-      "condition": "minecraft:alternative",
+      "condition": "minecraft:alternatives",
       "terms": [
         {
           "condition": "minecraft:entity_properties",
