@@ -188,7 +188,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     public static void explodeOnPistonAction(final PistonEvent.Pre event) {
         if (!(event.getLevel() instanceof Level level)) return;
         if (level.isClientSide) return;
-        if (event.getPistonMoveType() != PistonEvent.PistonMoveType.EXTEND) return;
 
         PistonStructureResolver structureResolver = event.getStructureHelper();
         if (structureResolver == null) return;
