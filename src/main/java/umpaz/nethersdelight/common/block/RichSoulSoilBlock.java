@@ -15,7 +15,6 @@ import vectorwing.farmersdelight.common.utility.MathUtils;
 
 public class RichSoulSoilBlock extends Block
 {
-
     public RichSoulSoilBlock(Properties properties) {
         super(properties);
     }
@@ -96,7 +95,15 @@ public class RichSoulSoilBlock extends Block
 
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, net.minecraftforge.common.IPlantable plantable) {
-        net.minecraftforge.common.PlantType plantType = plantable.getPlantType(level, pos.relative(facing));
-        return plantType == PlantType.NETHER;
+        PlantType plantType = plantable.getPlantType(level, pos.relative(facing));
+        if (plantType == PlantType.NETHER) return true;
+
+        BlockState plant = plantable.getPlant(level, pos.relative(facing));
+        Block plantBlock = plant.getBlock();
+        if (plantBlock instanceof RootsBlock) return true;
+        if (plantBlock instanceof FungusBlock) return true;
+        if (plantBlock instanceof NetherSproutsBlock) return true;
+
+        return false;
     }
 }

@@ -6,8 +6,14 @@ pluginManagement {
             url = 'https://maven.neoforged.net/releases'
             content {
                 includeGroupAndSubgroups "net.neoforged"
-                includeGroupAndSubgroups "org.spongepowered"
                 includeGroupAndSubgroups "net.minecraftforge"
+            }
+        }
+        maven {
+            name = 'SpongePowered'
+            url = 'https://repo.spongepowered.org/maven'
+            content {
+                includeGroupAndSubgroups "org.spongepowered"
             }
         }
         maven {
