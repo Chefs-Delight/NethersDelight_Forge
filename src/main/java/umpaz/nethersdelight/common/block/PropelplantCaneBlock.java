@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -39,7 +40,6 @@ import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.registry.NDItems;
-import vectorwing.farmersdelight.common.tag.ModTags;
 
 
 @Mod.EventBusSubscriber(modid = NethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -47,6 +47,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     public static final BooleanProperty PEARL = BooleanProperty.create("pearl");
     public static final BooleanProperty STEM = BooleanProperty.create("stem");
     public static final BooleanProperty BUD = BooleanProperty.create("bud");
+    public static final BooleanProperty CUT = BooleanProperty.create("cut");
     public static final float EXPLOSION_LEVEL = 1.0F;
     private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
@@ -83,23 +84,41 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.getValue(BUD)) return;
 
-        if (level.isEmptyBlock(pos.above())) {
-            if (random.nextInt(12) == 0) {
-                BlockState bottomState = level.getBlockState(pos.below().below());
-                if (state.getValue(BUD) && !state.getValue(STEM) && bottomState.is(this)) {
-                    return;
-                } else {
-                    boolean pearl = state.getValue(PEARL);
-                    level.setBlock(pos, state.setValue(BUD, false).setValue(PEARL, false), 2);
-                    level.setBlock(pos.above(), defaultBlockState().setValue(BUD, true).setValue(PEARL, pearl), 2);
-                }
+        if (random.nextInt(8) == 0 && !state.getValue(PEARL)) {
+            state = state.setValue(PEARL, true);
+            level.setBlock(pos, state, 2);
+        }
+
+        if (!level.isEmptyBlock(pos.above())) return;
+
+        if (random.nextInt(12) == 0) {
+            BlockState belowState = level.getBlockState(pos.below());
+            BlockState bottomState = level.getBlockState(pos.below().below());
+            if (belowState.is(this) && bottomState.is(this)) return;
+
+            boolean pearl = state.getValue(PEARL);
+            level.setBlock(pos, state.setValue(BUD, false).setValue(PEARL, false), 2);
+            level.setBlock(pos.above(), defaultBlockState().setValue(BUD, true).setValue(PEARL, pearl), 2);
+        }
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        if (!level.isClientSide && !willHarvest) {
+            playerWillDestroy(level, pos, state, player);
+            explode(state, level, pos, player);
+            return true;
+        }
+
+        if (!level.isClientSide()) {
+            BlockPos abovePos = pos.above();
+            BlockState aboveState = level.getBlockState(abovePos);
+            if (aboveState.is(this)) {
+                level.setBlock(abovePos, aboveState.setValue(CUT, true), 2);
             }
         }
 
-        if (random.nextInt(8) == 0 && !state.getValue(PEARL)) {
-            level.setBlock(pos, state.setValue(PEARL, true), 2);
-        }
-        super.randomTick(state, level, pos, random);
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
