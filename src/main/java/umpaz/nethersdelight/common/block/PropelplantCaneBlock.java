@@ -266,7 +266,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(PEARL, STEM, BUD);
+        builder.add(PEARL, STEM, BUD, CUT);
     }
 
     @Override
