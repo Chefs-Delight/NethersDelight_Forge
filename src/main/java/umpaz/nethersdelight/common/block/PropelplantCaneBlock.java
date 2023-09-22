@@ -52,7 +52,13 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
 
     public PropelplantCaneBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(PEARL, false).setValue(STEM, false).setValue(BUD, false));
+        registerDefaultState(
+                defaultBlockState()
+                        .setValue(PEARL, false)
+                        .setValue(STEM, false)
+                        .setValue(BUD, false)
+                        .setValue(CUT, false)
+        );
     }
 
     @Override
