@@ -190,15 +190,16 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         if (level.isClientSide) return;
         if (event.getPistonMoveType() != PistonEvent.PistonMoveType.EXTEND) return;
 
-        Direction pistonDirection = event.getDirection();
-        BlockPos pistonPos = event.getPos();
-        for (int i = 1; i <= PistonStructureResolver.MAX_PUSH_DEPTH + 1; i++) {
-            BlockPos targetPos = pistonPos.relative(pistonDirection, i);
-            BlockState targetPosState = level.getBlockState(targetPos);
+        PistonStructureResolver structureResolver = event.getStructureHelper();
+        if (structureResolver == null) return;
 
-            if (targetPosState.isAir()) {
-                break;
-            }
+        structureResolver.resolve();
+        structureResolver.getToDestroy().forEach((BlockPos pos) -> {
+            BlockState posState = level.getBlockState(pos);
+            if (!(posState.getBlock() instanceof PropelplantCaneBlock propelplantCaneBlock)) return;
+            propelplantCaneBlock.explode(posState, level, pos);
+        });
+    }
 
     protected void explode(Level level, BlockPos pos) {
         explode(level, pos, (LivingEntity)null);
