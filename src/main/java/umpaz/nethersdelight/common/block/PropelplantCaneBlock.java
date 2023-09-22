@@ -230,7 +230,11 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState belowState = context.getLevel().getBlockState(context.getClickedPos().below());
-        return defaultBlockState().setValue(STEM, !belowState.is(this)).setValue(BUD, true);
+        BlockState aboveState = context.getLevel().getBlockState(context.getClickedPos().above());
+
+        return defaultBlockState()
+                .setValue(STEM, !belowState.is(this))
+                .setValue(BUD, !aboveState.is(this));
     }
 
     @Override
