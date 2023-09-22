@@ -123,15 +123,16 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity instanceof LivingEntity) {
-            entity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
-            if (!entity.isCrouching()) {
-                explode(state, level, pos);
+        if (entity instanceof LivingEntity livingEntity) {
+            livingEntity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
+            if (!livingEntity.isCrouching()) {
+                explode(state, level, pos, livingEntity);
             }
             return;
         }
         if (entity instanceof Projectile) {
             explode(state, level, pos);
+            return;
         }
         super.entityInside(state, level, pos, entity);
     }
