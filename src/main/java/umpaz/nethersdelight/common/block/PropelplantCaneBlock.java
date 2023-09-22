@@ -68,11 +68,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
         if (state.getValue(PEARL)) {
-            int j = 1 + level.random.nextInt(2);
-            popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
-            level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-            level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return harvestPearls(state, level, pos, player, hand, context);
         }
         return super.use(state, level, pos, player, hand, context);
     }
@@ -182,18 +178,31 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
                 break;
             }
 
-            if (targetPosState.getBlock() instanceof PropelplantCaneBlock) {
-                level.explode(null, targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D, 1.0F, false, Level.ExplosionInteraction.NONE);
-                break;
-            }
-        }
+    protected void explode(Level level, BlockPos pos) {
+        explode(level, pos, (LivingEntity)null);
     }
 
-    public void explode(BlockState state, Level level, BlockPos pos) {
-        if (!level.isClientSide) {
-            Explosion explosion = level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
-            super.onBlockExploded(state, level, pos, explosion);
-        }
+    protected void explode(Level level, BlockPos pos, @Nullable LivingEntity entity) {
+        explode(level.getBlockState(pos), level, pos, entity);
+    }
+
+    protected void explode(BlockState state, Level level, BlockPos pos) {
+        explode(state, level, pos, (LivingEntity) null);
+    }
+
+    protected void explode(BlockState state, Level level, BlockPos pos, @Nullable LivingEntity entity) {
+        if (level.isClientSide) return;
+
+        Explosion explosion = level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
+        int j = 1 + level.random.nextInt(2);
+        popResource(level, pos, new ItemStack(NDItems.PROPELPEARL.get(), j));
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        level.setBlock(pos, state.setValue(PEARL, Boolean.FALSE), 2);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
