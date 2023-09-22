@@ -213,9 +213,8 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         }
 
         if (neighborDirection == Direction.UP) {
-            return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos).setValue(BUD, !neighborState.is(this));
+            return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos).setValue(BUD, !neighborState.is(this)).setValue(PEARL, false);
         }
-
         return super.updateShape(state, neighborDirection, neighborState, level, pos, neighborPos);
     }
 
@@ -224,7 +223,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
 
-        if (belowState.is(this)) return true;
+        if (belowState.is(this) && !belowState.getValue(PEARL)) return true;
         return this.mayPlaceOn(belowState, level, belowPos);
     }
 

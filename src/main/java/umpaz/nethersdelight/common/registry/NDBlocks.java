@@ -79,14 +79,10 @@ public class NDBlocks {
     );
 
     public static final RegistryObject<Block> PROPELPLANT_TORCH = BLOCKS.register("propelplant_torch", () -> new TorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).lightLevel((light) -> {
-                return 12;
-            }), ParticleTypes.FLAME));
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lightLevel((light) -> 12), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> PROPELPLANT_WALL_TORCH = BLOCKS.register("propelplant_wall_torch", () -> new WallTorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).lootFrom( PROPELPLANT_TORCH ).lightLevel((light) -> {
-                return 12;
-            }), ParticleTypes.FLAME));
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lootFrom(PROPELPLANT_TORCH).lightLevel((light) -> 12), ParticleTypes.FLAME));
 
     public static ToIntFunction<BlockState> propelplantBlockEmission(int pearlLightValue) {
         return (state) -> {

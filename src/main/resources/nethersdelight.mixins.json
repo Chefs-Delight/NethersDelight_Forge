@@ -6,7 +6,6 @@
   "mixins": [
     "FungusBlockMixin",
     "NetherSproutsBlockMixin",
-    "NetherWartBlockMixin",
     "RootsBlockMixin"
   ],
   "client": [
