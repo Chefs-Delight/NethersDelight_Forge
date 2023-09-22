@@ -165,9 +165,22 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {
-        if (!state.canSurvive(level, pos)) {
-            explode(state, level, pos);
+        if (!level.isClientSide() && !state.canSurvive(level, pos) && state.getValue(CUT)) {
+            level.destroyBlock(pos, true);
+
+            BlockPos abovePos = pos.above();
+            BlockState aboveState = level.getBlockState(abovePos);
+            if (aboveState.is(this)) {
+                level.setBlock(abovePos, aboveState.setValue(CUT, true), 2);
+            }
+            return;
         }
+
+        if (!level.isClientSide() && !state.canSurvive(level, pos)) {
+            explode(state, level, pos);
+            return;
+        }
+
         super.tick(state, level, pos, randomSource);
     }
 
