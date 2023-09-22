@@ -145,7 +145,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
         explode(state, level, pos);
-        super.onBlockExploded(state, level, pos, explosion);
     }
 
     @Override
@@ -161,8 +160,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
 
     @Override
     public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable net.minecraft.core.Direction face, @javax.annotation.Nullable LivingEntity igniter) {
-        explode(state, level, pos);
-        super.onCaughtFire(state, level, pos, face, igniter);
+        explode(state, level, pos, igniter);
     }
 
     @Override
