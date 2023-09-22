@@ -259,7 +259,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         return this.mayPlaceOn(belowState, level, belowPos);
     }
 
-    public boolean mayPlaceOn(BlockState state, LevelReader level, BlockPos pos) {
+    protected boolean mayPlaceOn(BlockState state, LevelReader level, BlockPos pos) {
         return state.is(BlockTags.NYLIUM) || state.is(Tags.Blocks.NETHERRACK) || state.is(NDBlocks.RICH_SOUL_SOIL.get());
     }
 
