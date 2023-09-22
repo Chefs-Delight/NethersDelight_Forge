@@ -1,17 +1,13 @@
 package umpaz.nethersdelight.common.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.PlantType;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import vectorwing.farmersdelight.common.Configuration;
-import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 
 public class RichSoulSoilBlock extends Block

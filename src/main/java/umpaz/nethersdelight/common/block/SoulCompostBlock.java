@@ -15,7 +15,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.tag.NDTags;
-import vectorwing.farmersdelight.common.registry.ModBlocks;
 
 public class SoulCompostBlock extends Block
 {
