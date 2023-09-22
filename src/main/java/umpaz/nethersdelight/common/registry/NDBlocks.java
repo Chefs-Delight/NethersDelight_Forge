@@ -69,6 +69,7 @@ public class NDBlocks {
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.NETHER)
                             .pushReaction(PushReaction.DESTROY)
+                            .requiresCorrectToolForDrops()
                             .noCollission()
                             .randomTicks()
                             .ignitedByLava()
