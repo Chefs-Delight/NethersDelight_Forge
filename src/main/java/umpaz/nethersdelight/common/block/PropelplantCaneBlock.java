@@ -122,21 +122,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @javax.annotation.Nullable BlockEntity blockEntity, ItemStack stack) {
-        if (stack.is(ModTags.KNIVES)) {
-            BlockPos topPos = pos.above();
-            while (level.getBlockState(topPos).getBlock() instanceof PropelplantCaneBlock) {
-                dropResources(state, level, topPos, blockEntity, player, stack);
-                level.destroyBlock(topPos, true);
-                topPos = topPos.above();
-            }
-        } else {
-            explode(state, level, pos);
-        }
-        super.playerDestroy(level, player, pos, state, blockEntity, stack);
-    }
-
-    @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity) {
             entity.makeStuckInBlock(state, new Vec3(0.8D, 0.75D, 0.8D));
