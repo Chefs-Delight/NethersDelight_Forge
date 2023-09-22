@@ -168,22 +168,23 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
 
     @SubscribeEvent
     public static void explodeOnPistonAction(final PistonEvent.Pre event) {
-        if (event.getPistonMoveType() == PistonEvent.PistonMoveType.EXTEND && event.getLevel() instanceof Level level) {
-            Direction pistonDirection = event.getDirection();
-            if (!level.isClientSide) {
-                BlockPos pistonPos = event.getPos();
-                for (int i = 1; i <= PistonStructureResolver.MAX_PUSH_DEPTH + 1; i++) {
-                    BlockPos targetPos = pistonPos.relative(pistonDirection, i);
-                    BlockState targetPosState = level.getBlockState(targetPos);
+        if (!(event.getLevel() instanceof Level level)) return;
+        if (level.isClientSide) return;
+        if (event.getPistonMoveType() != PistonEvent.PistonMoveType.EXTEND) return;
 
-                    if (targetPosState.isAir()) {
-                        break;
-                    }
-                    else if (targetPosState.getBlock() instanceof PropelplantCaneBlock) {
-                        level.explode(null, targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D, 1.0F, false, Level.ExplosionInteraction.NONE);
-                        break;
-                    }
-                }
+        Direction pistonDirection = event.getDirection();
+        BlockPos pistonPos = event.getPos();
+        for (int i = 1; i <= PistonStructureResolver.MAX_PUSH_DEPTH + 1; i++) {
+            BlockPos targetPos = pistonPos.relative(pistonDirection, i);
+            BlockState targetPosState = level.getBlockState(targetPos);
+
+            if (targetPosState.isAir()) {
+                break;
+            }
+
+            if (targetPosState.getBlock() instanceof PropelplantCaneBlock) {
+                level.explode(null, targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D, 1.0F, false, Level.ExplosionInteraction.NONE);
+                break;
             }
         }
     }
