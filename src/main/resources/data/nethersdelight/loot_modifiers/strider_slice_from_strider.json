@@ -1,5 +1,13 @@
 {
   "type": "farmersdelight:add_loot_table",
-  "conditions": [],
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:strider"
+      }
+    }
+  ],
   "lootTable": "nethersdelight:entities/strider_slice"
 }
