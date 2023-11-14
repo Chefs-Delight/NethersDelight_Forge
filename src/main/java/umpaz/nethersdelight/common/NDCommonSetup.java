@@ -13,6 +13,7 @@ import umpaz.nethersdelight.common.registry.NDItems;
 
 @Mod.EventBusSubscriber(modid = NethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NDCommonSetup {
+
     @SubscribeEvent
     public static void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(NDCommonSetup::registerCompostables);

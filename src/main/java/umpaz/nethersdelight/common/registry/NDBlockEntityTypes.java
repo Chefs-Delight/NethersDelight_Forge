@@ -5,7 +5,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
-import umpaz.nethersdelight.common.block.entity.*;
+import umpaz.nethersdelight.common.block.entity.BlackstoneBlastFurnaceBlockEntity;
+import umpaz.nethersdelight.common.block.entity.BlackstoneFurnaceBlockEntity;
+import umpaz.nethersdelight.common.block.entity.BlackstoneStoveBlockEntity;
+import umpaz.nethersdelight.common.block.entity.NetherBrickSmokerBlockEntity;
 
 public class NDBlockEntityTypes {
 

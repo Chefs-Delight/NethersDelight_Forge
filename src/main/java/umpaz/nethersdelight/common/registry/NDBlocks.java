@@ -73,70 +73,43 @@ public class NDBlocks {
     );
 
     //Propelplant
-    private static final BlockBehaviour.Properties propelplantBlockBehaviour = BlockBehaviour.Properties.of()
-            .mapColor(MapColor.NETHER)
-            .pushReaction(PushReaction.DESTROY)
-            .noCollission()
-            .sound(SoundType.GRASS)
-            .strength(0.1F);
-
-    private static final BlockBehaviour.Properties propelplantBerryBlockBehaviour = BlockBehaviour.Properties.of()
-            .mapColor(MapColor.NETHER)
-            .pushReaction(PushReaction.DESTROY)
-            .noCollission()
-            .sound(SoundType.GRASS)
-            .strength(0.1F)
-            .lightLevel(propelplantBlockEmission(9));
-
-    public static final RegistryObject<Block> PROPELPLANT_STEM = BLOCKS.register("propelplant_stem", () ->
-            new PropelplantStemBlock(propelplantBlockBehaviour)
-    );
-
-    public static final RegistryObject<Block> PROPELPLANT_BERRY_STEM = BLOCKS.register("propelplant_berry_stem", () ->
-            new PropelplantBerryStemBlock(propelplantBerryBlockBehaviour)
-    );
-
     public static final RegistryObject<Block> PROPELPLANT_CANE = BLOCKS.register("propelplant_cane", () ->
-            new PropelplantCaneBlock(propelplantBlockBehaviour)
-    );
-
-    public static final RegistryObject<Block> PROPELPLANT_BERRY_CANE = BLOCKS.register("propelplant_berry_cane", () ->
-            new PropelplantBerryCaneBlock(propelplantBerryBlockBehaviour)
+            new PropelplantCaneBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.NETHER)
+                            .pushReaction(PushReaction.DESTROY)
+                            .requiresCorrectToolForDrops()
+                            .noCollission()
+                            .randomTicks()
+                            .ignitedByLava()
+                            .sound(SoundType.GRASS)
+                            .strength(0.1F)
+                            .lightLevel(propelplantBlockEmission(9))
+            )
     );
 
     public static final RegistryObject<Block> PROPELPLANT_TORCH = BLOCKS.register("propelplant_torch", () -> new TorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_STEM.get()).lightLevel((light) -> {
-                return 12;
-            }), ParticleTypes.FLAME));
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lightLevel((light) -> 12), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> PROPELPLANT_WALL_TORCH = BLOCKS.register("propelplant_wall_torch", () -> new WallTorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_STEM.get()).lootFrom( PROPELPLANT_TORCH ).lightLevel((light) -> {
-                return 12;
-            }), ParticleTypes.FLAME));
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lootFrom(PROPELPLANT_TORCH).lightLevel((light) -> 12), ParticleTypes.FLAME));
+
+    public static ToIntFunction<BlockState> propelplantBlockEmission(int pearlLightValue) {
+        return (state) -> {
+            if (state.getValue(PropelplantCaneBlock.PEARL)) return pearlLightValue;
+            return 0;
+        };
+    }
 
     public static ToIntFunction<BlockState> stoveBlockEmission(int lightValue, int soulLightValue) {
         return (state) -> {
-            if (state.getValue(BlackstoneStoveBlock.SOUL)) {
-                return soulLightValue;
-            }
-            if (!state.getValue(BlackstoneStoveBlock.SOUL) && state.getValue(BlockStateProperties.LIT)) {
-                return lightValue;
-            } else
-                return 0;
+            if (state.getValue(BlackstoneStoveBlock.SOUL)) return soulLightValue;
+            if (state.getValue(BlockStateProperties.LIT)) return lightValue;
+            return 0;
         };
     }
 
     public static ToIntFunction<BlockState> furnaceBlockEmission(int lightValue) {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
-    }
-
-    public static ToIntFunction<BlockState> propelplantBlockEmission(int pearl) {
-        return (state) -> {
-            if (state.getValue(PropelplantBerryStemBlock.PEARL)) {
-                return pearl;
-            }
-            else
-                return 0;
-        };
     }
 }

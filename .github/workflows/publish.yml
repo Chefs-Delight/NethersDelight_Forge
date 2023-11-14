@@ -1,9 +1,8 @@
 name: Publish to CurseForge and Modrinth
 
 on:
-  create:
-    tag:
-      - '*'
+  release:
+    types: [published]
 
 jobs:
   build:
