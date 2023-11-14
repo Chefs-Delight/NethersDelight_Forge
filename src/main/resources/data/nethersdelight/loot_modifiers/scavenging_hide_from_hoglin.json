@@ -1,5 +1,5 @@
 {
-  "type": "farmersdelight:add_item",
+  "type": "nethersdelight:replace_item",
   "conditions": [
     {
       "condition": "minecraft:entity_properties",
@@ -20,5 +20,8 @@
       }
     }
   ],
-  "item": "nethersdelight:hoglin_hide"
+  "quantityOffset": 1,
+  "quantityScaleFactor": 0.0,
+  "itemToReplace": "minecraft:leather",
+  "replacementItem": "nethersdelight:hoglin_hide"
 }
