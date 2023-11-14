@@ -19,6 +19,7 @@ public class NethersDelight
 
 		NDItems.ITEMS.register(modEventBus);
 		NDBlocks.BLOCKS.register(modEventBus);
+		NDLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 		NDFeatures.FEATURES.register(modEventBus);
 		NDBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
 		NDCreativeTab.TABS.register(modEventBus);
