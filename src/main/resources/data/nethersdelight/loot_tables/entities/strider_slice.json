@@ -40,46 +40,20 @@
           "name": "nethersdelight:strider_slice"
         }
       ],
-
       "conditions": [
         {
-           "condition": "minecraft:entity_properties",
-      "entity": "killer",
-      "predicate": {
-        "equipment": {
-          "mainhand": {
-            "tag": "nethersdelight:tools/hunting_tools"
-          		}
-			}
-		}
-	}
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 2.0,
-                "max": 5.0,
-                "type": "minecraft:uniform"
-              }
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "min": 0.0,
-                "max": 1.0
+          "condition": "minecraft:entity_properties",
+          "entity": "killer",
+          "predicate": {
+            "equipment": {
+              "mainhand": {
+                "tag": "nethersdelight:tools/hunting_tools"
               }
             }
-          ],
-          "name": "minecraft:string"
+          }
         }
       ]
     }
-  ]
+  ],
+  "random_sequence": "minecraft:entities/strider"
 }

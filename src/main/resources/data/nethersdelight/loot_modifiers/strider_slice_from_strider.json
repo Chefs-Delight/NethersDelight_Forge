@@ -1,0 +1,5 @@
+{
+  "type": "farmersdelight:add_loot_table",
+  "conditions": [],
+  "lootTable": "nethersdelight:entities/strider_slice"
+}
