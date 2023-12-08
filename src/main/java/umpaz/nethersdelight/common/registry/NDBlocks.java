@@ -63,6 +63,15 @@ public class NDBlocks {
     public static final RegistryObject<Block> MIMICARNATION = BLOCKS.register("mimicarnation", () -> new MimicarnationBlock
             (MobEffects.INVISIBILITY, 8, mimicarnationBlockBehaviour));
 
+    public static final RegistryObject<Block> POTTED_MIMICARNATION = BLOCKS.register("potted_mimicarnation",
+            () -> new FlowerPotBlock(
+                    null,
+                    NDBlocks.MIMICARNATION,
+                    BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)
+                            .mapColor(MapColor.PLANT)
+            )
+    );
+
     //Propelplant
     public static final RegistryObject<Block> PROPELPLANT_CANE = BLOCKS.register("propelplant_cane", () ->
             new PropelplantCaneBlock(
